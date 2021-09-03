@@ -1,4 +1,3 @@
-
 --- RECIPE ---
 local seChestMk1UpgradeR = {}
 

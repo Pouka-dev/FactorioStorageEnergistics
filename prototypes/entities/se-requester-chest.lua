@@ -1,4 +1,21 @@
+local isNormalMode = settings.startup["se-mod_difficulty"].value == "Normal"
 
+local ingredients
+if(isNormalMode) then
+    ingredients = 
+    {
+        { Constants.Names.Proto.PhaseCoil.Item, 5 },
+        { "logistic-chest-requester", 1}
+        
+    }
+else
+    ingredients = 
+    {
+        { Constants.Names.Proto.PhaseCoil.Item, 2 },
+        { "iron-chest", 5},
+        { "electronic-circuit", 2 }
+    }
+end
 
 --- ITEM ---
 local seRequesterChestI = {}
@@ -19,10 +36,7 @@ seRequesterChestR.type = "recipe"
 seRequesterChestR.name = Constants.Names.Proto.RequesterChest.Recipe
 seRequesterChestR.enabled = false
 seRequesterChestR.energy_required = 3
-seRequesterChestR.ingredients = {
-    {"logistic-chest-requester", 1},
-    { Constants.Names.Proto.PhaseCoil.Item, 1 }
-}
+seRequesterChestR.ingredients = ingredients
 seRequesterChestR.result = Constants.Names.Proto.RequesterChest.Item
 
 --- ENTITY ---

@@ -5,15 +5,20 @@ return function()
         PowerPerChunk = 50,
         TickRate = 30,
         ReadOnlyStorageChest = true,
+        ModDifficulty = "Normal"
+
     }
 
     -- Called to load or reload the mod settings
     function SESettings.LoadSettings(event)
-
+        -- Main
+        local RodDifficulty = settings.startup["se-mod_difficulty"].value
+        -- Global
         local NodeIdlePowerDrain = settings.global["se-power_drain_per_node_per_tick_in_watts"].value
         local PowerPerItem = settings.global["se-transfer_power_drain_per_item_in_watts"].value
         local PowerPerChunk = settings.global["se-transfer_power_drain_per_chunk_in_watts"].value
         local TickRate = settings.global["se-game_ticks_per_network_tick"].value
+        -- Player
         local ReadOnlyStorageChest = settings.player["se-read_only_storage"].value
 
         if event ~= nil then 
@@ -27,11 +32,14 @@ return function()
             end
            end
         end
-
+        -- Main
+        SESettings.ModDifficulty = RodDifficulty
+        -- Global
         SESettings.NodeIdlePowerDrain = NodeIdlePowerDrain
         SESettings.PowerPerItem = PowerPerItem
         SESettings.PowerPerChunk = PowerPerChunk
         SESettings.TickRate = TickRate
+        -- Player
         SESettings.ReadOnlyStorageChest = ReadOnlyStorageChest
     end
 

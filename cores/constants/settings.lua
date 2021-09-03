@@ -4,15 +4,15 @@ local Settings = {}
 Settings = {
     se_settings_mod = {
         -- Main
-        --- power_drain_per_node_per_tick_in_wattsqdqsdqd = {
-        ---     type = "int-setting",
-        ---     setting_type = "startup",
-        ---     localised_name = {"se_global_settings.se-power-drain-per-node-per-tick-in-watts"},
-        ---     default_value = 5,
-        ---     minimum_value = 1,
-        ---     allow_blank = false,
-        ---     order = "a-a"
-        --- },
+        mod_difficulty = {
+            type = "string-setting",
+            setting_type = "startup",
+            localised_name = {"se_startup_settings.se-mod_difficulty"},
+            localised_description = {"se_startup_settings_descriptions.se-mod_difficulty"},
+            default_value = "Normal",
+            allowed_values = {"Normal","Easy"},
+            order = "a-a"
+        },
         -- Global
         power_drain_per_node_per_tick_in_watts = {
             type = "int-setting",
@@ -53,7 +53,7 @@ Settings = {
             setting_type = "runtime-per-user",
             localised_name = {"se_user_settings.se-read-only-storage"},
             default_value = true,
-            order = "a-e"
+            order = "a-a"
         }
     }
 }

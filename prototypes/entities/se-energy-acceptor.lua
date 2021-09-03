@@ -1,3 +1,23 @@
+local isNormalMode = settings.startup["se-mod_difficulty"].value == "Normal"
+
+local ingredients
+if(isNormalMode) then
+    ingredients = 
+    {
+        { Constants.Names.Proto.PetroQuartz.Item, 20 },
+        { "iron-plate", 10 },
+        { "copper-plate", 10 },
+        { "battery", 10 }
+    }
+else
+    ingredients = 
+    {
+        { Constants.Names.Proto.PetroQuartz.Item, 2 },
+        { "iron-plate", 4 },
+        { "copper-plate", 4 },
+        { "electronic-circuit", 5 }
+    }
+end
 
 --- ITEM ---
 local seEnergyAcceptorI = {}
@@ -19,11 +39,7 @@ seEnergyAcceptorR.name = Constants.Names.Proto.EnergyAcceptor.Recipe
 seEnergyAcceptorR.enabled = false
 seEnergyAcceptorR.energy_required = 5
 seEnergyAcceptorR.result = Constants.Names.Proto.EnergyAcceptor.Item
-seEnergyAcceptorR.ingredients = {
-    { "iron-plate", 4 },
-    {"battery", 5},
-    { Constants.Names.Proto.PetroQuartz.Item, 5 }
-}
+seEnergyAcceptorR.ingredients = ingredients
 
 --- ENTITY ---
 local seEnergyAcceptorE = {}

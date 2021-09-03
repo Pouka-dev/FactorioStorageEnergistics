@@ -1,4 +1,21 @@
+local isNormalMode = settings.startup["se-mod_difficulty"].value == "Normal"
 
+local ingredients
+if(isNormalMode) then
+    ingredients = 
+    {
+        { Constants.Names.Proto.PetroQuartz.Item, 10 },
+        { "copper-cable", 50 },
+        { "electronic-circuit", 20 }
+    }
+else
+    ingredients = 
+    {
+        { Constants.Names.Proto.PetroQuartz.Item, 1 },
+        { "copper-cable", 5 },
+        { "electronic-circuit", 2 }
+    }
+end
 
 --- ITEMS ---
 local seControllerI = {}
@@ -20,11 +37,7 @@ seControllerR.type = "recipe"
 seControllerR.name = Constants.Names.Proto.Controller.Recipe
 seControllerR.enabled = false
 seControllerR.energy_required = 3
-seControllerR.ingredients = {
-    { "copper-cable", 120 },
-    { "electronic-circuit", 25 },
-    { Constants.Names.Proto.PetroQuartz.Item, 1 }
-}
+seControllerR.ingredients = ingredients
 seControllerR.result = Constants.Names.Proto.Controller.Item
 
 
