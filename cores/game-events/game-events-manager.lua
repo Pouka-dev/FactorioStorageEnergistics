@@ -41,6 +41,9 @@ return function()
         SE.Logger.Tick()
     end
 
+
+    
+
     -- -- OnPlayerJoined( Event ) :: void
     -- -- Called when a player joins the game
     -- -- Event fields:

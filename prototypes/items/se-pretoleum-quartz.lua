@@ -1,4 +1,23 @@
+local isNormalMode = settings.startup["se-mod_difficulty"].value == "Normal"
 
+local ingredients
+if(isNormalMode) then
+    ingredients = 
+    {
+        {type = "item", name = "stone", amount = 10 },
+        {type = "fluid", name = "water", amount = 10},
+        {type = "fluid", name = "petroleum-gas", amount = 40}
+    }
+else
+    ingredients = 
+    {
+        { "stone", 10 },
+        { "iron-ore", 10 },
+        { "copper-ore", 10 },
+        { "coal", 5 },
+        { "electronic-circuit", 5 }
+    }
+end
 --- ITEM ---
 local sePetroleumQuartzI = {}
 
@@ -17,15 +36,13 @@ local sePetroleumQuartzR = {}
 sePetroleumQuartzR.type = "recipe"
 sePetroleumQuartzR.name = Constants.Names.Proto.PetroQuartz.Recipe
 sePetroleumQuartzR.enabled = false
-sePetroleumQuartzR.category = "chemistry"
+if(isNormalMode) then
+    sePetroleumQuartzR.category = "chemistry"
+end
 sePetroleumQuartzR.energy_required = 10
 sePetroleumQuartzR.subgroup = Constants.Strings.ItemGroups.StorageEnergistics.SubGroups.Items
 sePetroleumQuartzR.order = Constants.Names.Proto.PetroQuartz.Recipe
-sePetroleumQuartzR.ingredients = {
-    { type = "item", name = "stone", amount = 10 },
-    {type = "fluid", name = "water", amount = 10},
-    {type = "fluid", name = "petroleum-gas", amount = 40}
-}
+sePetroleumQuartzR.ingredients = ingredients
 sePetroleumQuartzR.results = { { type = "item", name = Constants.Names.Proto.PetroQuartz.Item, amount = 1 } }
 sePetroleumQuartzR.crafting_machine_tint = {
     primary = { r = 0.204, g = 0.553, b = 0.722, a = 0.000 },
