@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.0
+Date: 03. 09. 2021
+  Changes:
+    - Adding startup settings. Two choice for difficulty mode, Normal or Easy. Choice change recipes and technologies
+---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 03. 09. 2021
   Bugfixes:
