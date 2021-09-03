@@ -7,7 +7,7 @@ if(isNormalMode) then
         { Constants.Names.Proto.PetroQuartz.Item, 10 },
         { "iron-plate", 5 },
         { "copper-cable", 5 },
-        { "electronic-circuit", 30 }
+        { "electronic-circuit", 25 }
     }
 else
     ingredients = 
