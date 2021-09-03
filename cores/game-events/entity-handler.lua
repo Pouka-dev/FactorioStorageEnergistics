@@ -110,7 +110,7 @@ return function()
     -- - source :: LuaEntity: The source entity settings have been copied from.
     -- - destination :: LuaEntity: The destination entity settings have been copied to.
     function EntityHandlers.OnPasteSettings(event)
-        local player = Player.load(event).native()
+        local player = Player.load(event).get()
         local destEntity = event.destination
         local handler = SE.NodeHandlersRegistry.GetEntityHandler(destEntity)
         if (handler ~= nil) then

@@ -1,6 +1,4 @@
 
-
-
 -- Kinds of nodes
 local NodeTypes = {}
 

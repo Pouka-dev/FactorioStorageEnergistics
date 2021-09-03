@@ -239,7 +239,7 @@ return function(BaseGUI)
     -- @See BaseGui:OnShow
     function NetworkOverviewGUI:OnShow(event)
         
-        local player = Player.load(event).native()
+        local player = Player.load(event).get()
         
         -- Get root
         local root = Player.getGui(NetworkOverview.FrameRoot)
@@ -266,7 +266,7 @@ return function(BaseGUI)
     
     -- @See BaseGui:OnClose
     function NetworkOverviewGUI:OnClose(playerIndex)
-        local player = Player.setByIndex(playerIndex).native()
+        local player = Player.setByIndex(playerIndex).get()
         local root = Player.getGui(NetworkOverview.FrameRoot)
         local frame = root[NetworkOverview.Name]
         

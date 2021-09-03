@@ -12,7 +12,7 @@ return function(BaseGUI)
 
   -- @See BaseGUI:OnShow
   function StorageNodeGUI:OnShow(event)
-    local player = Player.load(event).native()
+    local player = Player.load(event).get()
     -- Get root
     local root = player.gui[StorageChestGUI.FrameRoot]
 
@@ -34,7 +34,7 @@ return function(BaseGUI)
 
   -- @See BaseGUI:OnClose
   function StorageNodeGUI:OnClose(playerIndex)
-    local player = Player.setByIndex(playerIndex).native()
+    local player = Player.setByIndex(playerIndex).get()
     local root = player.gui[StorageChestGUI.FrameRoot]
     local frame = root[StorageChestGUI.Name]
     if (frame ~= nil) then

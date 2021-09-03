@@ -2,25 +2,14 @@
 -- Description of the module.
 -- @module Player
 --
-local Player = {
+Player = {
   -- single-line comment
   classname = "SEPlayer"
 }
 
-local Lua_player = nil
+local cur_player = nil;
+local cur_tick = 0
 
--------------------------------------------------------------------------------
--- Print message
---
--- @function [parent=#Player] print
---
--- @param #arg message
---
-function Player.print(...)
-  if Lua_player ~= nil then
-    Lua_player.print(table.concat({...}," "))
-  end
-end
 -------------------------------------------------------------------------------
 -- Load factorio player
 --
@@ -31,9 +20,60 @@ end
 -- @return #Player
 --
 function Player.load(event)
-  Lua_player = game.players[event.player_index]
+  cur_player = game.players[event.player_index]
+  cur_tick = event.tick
   return Player
 end
+
+-------------------------------------------------------------------------------
+-- Return factorio player
+--
+-- @function [parent=#Player] get current player
+--
+-- @return #Lua_player
+--
+function Player.get()
+  return cur_player
+end
+
+
+-------------------------------------------------------------------------------
+-- Return factorio player
+--
+-- @function [parent=#Player] get mod settings
+--
+-- @return #Lua_player
+--
+function Player.getModSettings()
+  return cur_player.mod_settings
+end
+
+-------------------------------------------------------------------------------
+-- Return factorio tick
+--
+-- @function [parent=#Player] get current tick
+--
+-- @return tick
+--
+function Player.get_tick()
+  return cur_tick
+end
+
+-------------------------------------------------------------------------------
+-- Print message
+--
+-- @function [parent=#Player] print
+--
+-- @param #arg message
+--
+function Player.print(...)
+  if cur_player ~= nil then
+    cur_player.print(table.concat({...}," "))
+  end
+end
+
+
+
 
 -------------------------------------------------------------------------------
 -- Set factorio player
@@ -45,23 +85,66 @@ end
 -- @return #Player
 --
 function Player.set(player)
-  Lua_player = player
+  cur_player = player
   return Player
 end
 
 -------------------------------------------------------------------------------
 -- Set factorio player
 --
--- @function [parent=#Player] set
+-- @function [parent=#Player] setByIndex
 --
--- @param #LuaPlayer player
+-- @param #LuaPlayer number
 --
 -- @return #Player
 --
 function Player.setByIndex(index)
-  Lua_player = game.players[index]
+  cur_player = game.players[index]
   return Player
 end
+
+
+-------------------------------------------------------------------------------
+-- Return admin player
+--
+-- @function [parent=#Player] isAdmin
+--
+-- @return #boolean
+--
+function Player.isAdmin()
+  if cur_player == nil then
+    SE.Logger.Error("Error in function Player.isAdmin: Lua_player == nil")
+    return false
+  end
+  return cur_player.admin
+end
+
+-------------------------------------------------------------------------------
+-- Get gui
+--
+-- @function [parent=#Player] getGui
+--
+-- @param location
+--
+-- @return #LuaGuiElement
+--
+function Player.getGui(location)
+  return cur_player.gui[location]
+end
+
+-------------------------------------------------------------------------------
+-- Return force's player
+--
+-- @function [parent=#Player] getForce
+--
+--
+-- @return #table force
+--
+function Player.getForce()
+  return cur_player.force
+end
+
+
 
 -------------------------------------------------------------------------------
 -- Get game day
@@ -77,51 +160,4 @@ function Player.getGameDay()
   return day, day*dusk, day*night, day*dawn
 end
 
--------------------------------------------------------------------------------
--- Return factorio player
---
--- @function [parent=#Player] native
---
--- @return #Lua_player
---
-function Player.native()
-  return Lua_player
-end
 
--------------------------------------------------------------------------------
--- Return admin player
---
--- @function [parent=#Player] isAdmin
---
--- @return #boolean
---
-function Player.isAdmin()
-  return Lua_player.admin
-end
-
--------------------------------------------------------------------------------
--- Get gui
---
--- @function [parent=#Player] getGui
---
--- @param location
---
--- @return #LuaGuiElement
---
-function Player.getGui(location)
-  return Lua_player.gui[location]
-end
-
--------------------------------------------------------------------------------
--- Return force's player
---
--- @function [parent=#Player] getForce
---
---
--- @return #table force
---
-function Player.getForce()
-  return Lua_player.force
-end
-
-return Player

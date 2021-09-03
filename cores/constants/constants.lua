@@ -16,12 +16,20 @@ return function()
     -- Variables
     local Variables = require("cores.constants.variables")
 
+    -- Settings
+    local Settings = require("cores.constants.settings")
+
     Constants = {
         Names = Names,
         Strings = Strings,
         DataPaths = Paths,
         NodeTypes = NodeTypes,
-        Variables = Variables
+        Variables = Variables,
+        Settings = Settings
     }
     return Constants
+
+
+    
+    
 end

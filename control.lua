@@ -1,14 +1,10 @@
-local mod_gui = require("mod-gui")
-require "cores.lib.class"
+
+-------------- include libs ---------------
+require ("mod-gui")
+require ("cores.lib.class")
+require ("cores.models.player")
 
 
---- script.on_event(defines.events.on_gui_opened, function(event)
----     local player = game.players[event.player_index]
----     if (player.selected ~= nil) then
----         game.print(player.selected.name)
----     end
----     game.print(event.player_index)
---- end)
 
 --- Create the instance container
 SE = {
@@ -73,7 +69,7 @@ SE.GuiManager = (require "cores.guis.gui-manager")()
 SE.GameEventManager = (require "cores.game-events.game-events-manager")()
 
 require "cores.guis.guis"
-Player = require "cores.models.player"
+
 
 --- Register for events
 SE.GameEventManager.RegisterHandlers()

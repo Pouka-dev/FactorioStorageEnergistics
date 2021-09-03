@@ -112,7 +112,7 @@ return function(BaseHandler)
   function StorageNodeHandler:EnsureStructure()
     BaseHandler.EnsureStructure(self)
     self.HandlerName = StorageNodeHandler.HandlerName
-    if (ForceReadOnly(self)) then
+    if (ForceReadOnly(self) or SE.Settings.ReadOnlyStorageChest) then
       self.ReadOnlyMode = true
     end
     --self.ReadOnlyMode = nil

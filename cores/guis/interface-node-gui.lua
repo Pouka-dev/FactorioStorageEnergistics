@@ -155,7 +155,7 @@ return function(BaseGUI)
     self.AmountSlider = nil
     self.AmountTextfield = nil
 
-    Player.load(event).native()
+    Player.load(event).get()
 
     -- Get root
     local root = Player.getGui(SE.Constants.Names.Gui.Interface.FrameRoot)

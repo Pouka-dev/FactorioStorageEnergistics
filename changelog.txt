@@ -1,6 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+Date: 03. 09. 2021
+  Bugfixes:
+    - Fix prerequisites technologie
+  Changes:
+    - Adding player mod option for readonly mode for storage chest default value
+---------------------------------------------------------------------------------------------------
 Version: 1.0.0
-Date: 2021-08-27
+Date: 27. 08. 2021
   Bugfixes:
     - Gui code for selection with interface
     - Fix some error for 1.1.38 Factorio version

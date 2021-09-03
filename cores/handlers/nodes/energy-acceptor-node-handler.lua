@@ -12,7 +12,7 @@ return function(BaseHandler)
     local entity = node.Entity
     return entity.surface.create_entity(
       {
-        name = "hidden_" .. SE.Constants.Names.Proto.EnergyAcceptor.Entity,
+        name = "hidden-" .. SE.Constants.Names.Proto.EnergyAcceptor.Entity,
         position = entity.position,
         force = entity.force
       }

@@ -93,7 +93,7 @@ seEnergyAcceptorE.map_color = { r = 0.61, g = 0.23, b = 0.64 }
 local seEnergyAcceptorInterfaceE = {}
 
 seEnergyAcceptorInterfaceE.type = "electric-energy-interface"
-seEnergyAcceptorInterfaceE.name = "hidden_" .. Constants.Names.Proto.EnergyAcceptor.Entity
+seEnergyAcceptorInterfaceE.name = "hidden-" .. Constants.Names.Proto.EnergyAcceptor.Entity
 seEnergyAcceptorInterfaceE.icon = Constants.DataPaths.Icons .. "se-energy-acceptor.png"
 seEnergyAcceptorInterfaceE.icon_size = 32
 seEnergyAcceptorInterfaceE.flags = {}
