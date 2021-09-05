@@ -1,4 +1,3 @@
-
 -------------- include libs ---------------
 require ("mod-gui")
 require ("cores.lib.class")
