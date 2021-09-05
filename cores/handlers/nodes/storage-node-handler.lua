@@ -53,7 +53,7 @@ return function(BaseHandler)
     return inv.get_item_count(itemName)
   end
 
-  -- @See BaseNode:OnPasteSettings
+  -- @See BaseNode:GetContents
   function StorageNodeHandler:GetContents(catalog)
     local inv = self.Entity.get_inventory(defines.inventory.chest)
     -- Get total slot count
@@ -80,8 +80,8 @@ return function(BaseHandler)
     catalog[SE.Constants.Strings.FreeSlots] = (catalog[SE.Constants.Strings.FreeSlots] or 0) + freeSlots
   end
 
-  -- OnPasteSettings( Self,  LuaEntity, LuaPlayer ) :: void
-  function StorageNodeHandler:OnPasteSettings(sourceEntity, player)
+  -- OnPasteSettings( Self,  LuaEntity ) :: void
+  function StorageNodeHandler:OnPasteSettings(sourceEntity)
     -- Is this node forced read-only?
     if (ForceReadOnly(self)) then
       return
@@ -97,6 +97,24 @@ return function(BaseHandler)
       end
     end
   end
+
+ -- OnPasteSettingsWithNode( Self,  Node ) :: void
+ function StorageNodeHandler:OnPasteSettingsWithNode(sourceNode)
+  -- Is this node forced read-only?
+  if (ForceReadOnly(self)) then
+    return
+  end
+
+  -- Other node is storage node?
+  if (sourceNode ~= nil) then
+    local handler = SE.NodeHandlersRegistry.GetNodeHandler(sourceNode)
+    if (handler ~= nil and handler.Type == SE.Constants.NodeTypes.Storage) then
+      -- Copy read only setting
+      self.ReadOnlyMode = sourceNode.ReadOnlyMode
+    end
+  end
+end
+  
 
   -- @See BaseNode.NewNode
   function StorageNodeHandler.NewNode(entity)
