@@ -2,8 +2,14 @@
 require ("mod-gui")
 require ("cores.lib.class")
 require ("cores.models.player")
+require ("cores.lib.Object")
 
-
+-------------- include handlers --------------
+require "cores.handlers.nodes.base-node-handler"
+require "cores.handlers.nodes.controller-node-handler"
+require "cores.handlers.nodes.energy-acceptor-node-handler"
+require "cores.handlers.nodes.storage-node-handler"
+require "cores.handlers.nodes.interface-node-handler"
 
 --- Create the instance container
 SE = {
@@ -42,12 +48,20 @@ SE.NetworkHandler = (require "cores.handlers.network-handler")()
 
 --- Create node handlers
 SE.NodeHandlersRegistry = (require "cores.handlers.handlers-registry")()
-local BaseHandler = (require "cores.handlers.nodes.base-node-handler")()
-SE.NodeHandlersRegistry.AddHandler(BaseHandler)
-SE.NodeHandlersRegistry.AddHandler((require "cores.handlers.nodes.controller-node-handler")(BaseHandler))
-SE.NodeHandlersRegistry.AddHandler((require "cores.handlers.nodes.energy-acceptor-node-handler")(BaseHandler))
-SE.NodeHandlersRegistry.AddHandler((require "cores.handlers.nodes.storage-node-handler")(BaseHandler))
-SE.NodeHandlersRegistry.AddHandler((require "cores.handlers.nodes.interface-node-handler")(BaseHandler))
+
+-------------- instances Handlers --------------
+BaseNodeHandler = BaseNodeHandlerController(SE.Constants.Names.NodeHandlers.Base)
+local ControllerNodeHandlers = ControllerNodeHandlersController(SE.Constants.Names.NodeHandlers.Controller)
+local EnergyAcceptorNodeHandler = EnergyAcceptorNodeHandlerController(SE.Constants.Names.NodeHandlers.EnergyAcceptor)
+local StorageNodeHandler = StorageNodeHandlerController(SE.Constants.Names.NodeHandlers.Storage)
+local InterfaceNodeHandler = InterfaceNodeHandlerController(SE.Constants.Names.NodeHandlers.Interface)
+
+-------------- Handler Registry --------------
+SE.NodeHandlersRegistry.AddHandler(BaseNodeHandler)
+SE.NodeHandlersRegistry.AddHandler(ControllerNodeHandlers)
+SE.NodeHandlersRegistry.AddHandler(EnergyAcceptorNodeHandler)
+SE.NodeHandlersRegistry.AddHandler(StorageNodeHandler)
+SE.NodeHandlersRegistry.AddHandler(InterfaceNodeHandler)
 
 
 --- Link node handlers with entities

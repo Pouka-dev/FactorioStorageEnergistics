@@ -1,11 +1,8 @@
 -- Description: Storage Node
-return function(BaseHandler)
-    local InterfaceNodeHandler = {
-        HandlerName = SE.Constants.Names.NodeHandlers.Interface,
-        NeedsTicks = true,
-        Type = SE.Constants.NodeTypes.Device
-    }
-    setmetatable(InterfaceNodeHandler, {__index = BaseHandler})
+InterfaceNodeHandlerController = newclass(BaseNodeHandlerController,function(base,...)
+    BaseNodeHandler.init(base,...)
+    base.NeedsTicks = true
+  end)
     
     -- CopyNodeFilters( Node, Node ) :: void
     -- Copies the filters from the source to the node
@@ -51,12 +48,12 @@ return function(BaseHandler)
     end
     
     -- IsFiltered( Self, string ) :: bool
-    function InterfaceNodeHandler:IsFiltered(type)
+    function InterfaceNodeHandlerController:IsFiltered(type)
         return type == "item"
     end
     
     -- GetFilters( Self, string ) :: Array( { Item :: string, Amount: int } )
-    function InterfaceNodeHandler:GetFilters(type)
+    function InterfaceNodeHandlerController:GetFilters(type)
         if (type == "item") then
             return self.RequestFilters
         end
@@ -67,7 +64,7 @@ return function(BaseHandler)
     
     -- @See BaseNode:OnNetworkTick
     -- Fills interface with filtered items, removes anything else
-    function InterfaceNodeHandler:OnNetworkTick(network)
+    function InterfaceNodeHandlerController:OnNetworkTick(network)
         -- Get the nodes inventory
         local inv = self.Entity.get_inventory(defines.inventory.chest)
         
@@ -145,12 +142,12 @@ return function(BaseHandler)
     end
     
     -- @See BaseNode:OnGetGuiHandler
-    function InterfaceNodeHandler:OnGetGuiHandler(playerIndex)
+    function InterfaceNodeHandlerController:OnGetGuiHandler(playerIndex)
         return SE.GuiManager.Guis.InterfaceNodeGUI
     end
     
     -- @See BaseNode:OnPasteSettings
-    function InterfaceNodeHandler:OnPasteSettings(sourceEntity)
+    function InterfaceNodeHandlerController:OnPasteSettings(sourceEntity)
         local otherNode = SE.NetworksManager.GetNodeForEntity(sourceEntity)
         if (otherNode) then
             -- Network node
@@ -162,7 +159,7 @@ return function(BaseHandler)
     end
     
     -- @See BaseNode:OnPasteSettingsWithNode( Self,  Node ) :: void
-    function InterfaceNodeHandler:OnPasteSettingsWithNode(sourceNode)
+    function InterfaceNodeHandlerController:OnPasteSettingsWithNode(sourceNode)
         local otherNode = sourceNode
         if (otherNode) then
             -- Network node
@@ -173,23 +170,17 @@ return function(BaseHandler)
     
     
     -- @See BaseNode.NewNode
-    function InterfaceNodeHandler.NewNode(entity)
-        return InterfaceNodeHandler.EnsureStructure(BaseHandler.NewNode(entity))
+    function InterfaceNodeHandlerController.NewNode(entity)
+        return InterfaceNodeHandlerController.EnsureStructure(InterfaceNodeHandlerController._super.NewNode(entity))
     end
     
     -- @See BaseNode:EnsureStructure
-    function InterfaceNodeHandler:EnsureStructure()
-        BaseHandler.EnsureStructure(self)
+    function InterfaceNodeHandlerController:EnsureStructure()
+        InterfaceNodeHandlerController._super.EnsureStructure(self)
         
         -- Map( FilterIndex :: int -> { Item :: string, Amount :: int } )
         -- Used by the GUI to display selected items
         self.RequestFilters = self.RequestFilters or {}
         
-        -- Set handler name
-        self.HandlerName = InterfaceNodeHandler.HandlerName
-        
         return self
     end
-    
-    return InterfaceNodeHandler
-end

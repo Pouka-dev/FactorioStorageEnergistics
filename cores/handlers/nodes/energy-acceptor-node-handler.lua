@@ -1,12 +1,10 @@
 -- Description: Energy Acceptor node
 
-return function(BaseHandler)
-  local EnergyAcceptorNodeHandler = {
-    HandlerName = SE.Constants.Names.NodeHandlers.EnergyAcceptor,
-    Type = SE.Constants.NodeTypes.PowerSource,
-    NeedsTicks = true
-  }
-  setmetatable(EnergyAcceptorNodeHandler, {__index = BaseHandler})
+EnergyAcceptorNodeHandlerController = newclass(BaseNodeHandlerController,function(base,...)
+  BaseNodeHandler.init(base,...)
+  base.Type = SE.Constants.NodeTypes.PowerSource
+  base.NeedsTicks = true
+end)
 
   local CreateHiddenEntity = function(node)
     local entity = node.Entity
@@ -22,7 +20,7 @@ return function(BaseHandler)
   -- ExtractPower( Self, uint ) :: uint
   -- Called when the network needs power, and ProvidesPower is true.
   -- Return amount of power extracted.
-  function EnergyAcceptorNodeHandler:ExtractPower(watts)
+  function EnergyAcceptorNodeHandlerController:ExtractPower(watts)
     if (self.HiddenElectricEntity ~= nil and self.HiddenElectricEntity.valid) then
       local stored = self.HiddenElectricEntity.energy
 
@@ -46,7 +44,7 @@ return function(BaseHandler)
   -- StoredPower( Self ) : uint
   -- Called to determine amount of power stored in the node.
   -- Return amount of power stored.
-  function EnergyAcceptorNodeHandler:StoredPower()
+  function EnergyAcceptorNodeHandlerController:StoredPower()
     if (self.HiddenElectricEntity ~= nil and self.HiddenElectricEntity.valid) then
       return self.HiddenElectricEntity.energy
     else
@@ -55,15 +53,15 @@ return function(BaseHandler)
   end
 
   -- @See BaseNode:GetCircuitNetwork
-  function EnergyAcceptorNodeHandler:GetCircuitNetwork(wireType)
-    if (EnergyAcceptorNodeHandler.Valid(self)) then
+  function EnergyAcceptorNodeHandlerController:GetCircuitNetwork(wireType)
+    if (EnergyAcceptorNodeHandlerController.Valid(self)) then
       return self.Entity.get_circuit_network(wireType, defines.circuit_connector_id.accumulator)
     end
     return nil
   end
 
   -- @See BaseNode:OnTick
-  function EnergyAcceptorNodeHandler:OnTick(tick)
+  function EnergyAcceptorNodeHandlerController:OnTick(tick)
     -- Tick!
     self.TicksTillUpdate = self.TicksTillUpdate - 1
 
@@ -91,27 +89,25 @@ return function(BaseHandler)
   end
 
   -- @See BaseNode:OnDestroy
-  function EnergyAcceptorNodeHandler:OnDestroy()
+  function EnergyAcceptorNodeHandlerController:OnDestroy()
     if (self.HiddenElectricEntity ~= nil) then
       self.HiddenElectricEntity.destroy()
     end
   end
 
   -- @See BaseNode.NewNode
-  function EnergyAcceptorNodeHandler.NewNode(entity)
-    local node = BaseHandler.NewNode(entity)
-    EnergyAcceptorNodeHandler.EnsureStructure(node)
+  function EnergyAcceptorNodeHandlerController.NewNode(entity)
+    local node = EnergyAcceptorNodeHandlerController._super.NewNode(entity)
+    EnergyAcceptorNodeHandlerController.EnsureStructure(node)
     return node
   end
 
   -- @See BaseNode:EnsureStructure
-  function EnergyAcceptorNodeHandler:EnsureStructure()
-    BaseHandler.EnsureStructure(self)
-    self.HandlerName = EnergyAcceptorNodeHandler.HandlerName
+  function EnergyAcceptorNodeHandlerController:EnsureStructure()
+    EnergyAcceptorNodeHandlerController._super.EnsureStructure(self)
+    
     self.TicksTillUpdate = 5
     self.TickRate = 30
     return self
   end
 
-  return EnergyAcceptorNodeHandler
-end

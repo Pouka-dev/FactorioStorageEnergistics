@@ -1,14 +1,8 @@
--- This file is part of Storage Energistics
--- Author: Nividica
--- Created: 10/29/2017
 -- Description: Storage Node
-
-return function(BaseHandler)
-  local StorageNodeHandler = {
-    HandlerName = SE.Constants.Names.NodeHandlers.Storage,
-    Type = SE.Constants.NodeTypes.Storage
-  }
-  setmetatable(StorageNodeHandler, {__index = BaseHandler})
+StorageNodeHandlerController = newclass(BaseNodeHandlerController,function(base,...)
+  BaseNodeHandler.init(base,...)
+  base.Type = SE.Constants.NodeTypes.Storage
+end)
 
   -- ForceReadOnly( Node ) :: bool
   -- Returns true if read only should be forced, based on the entity
@@ -18,14 +12,14 @@ return function(BaseHandler)
 
   -- @See BaseNode:OnGetGuiHandler
   -- Show the gui
-  function StorageNodeHandler:OnGetGuiHandler(playerIndex)
+  function StorageNodeHandlerController:OnGetGuiHandler(playerIndex)
     if (not ForceReadOnly(self)) then
       return SE.GuiManager.Guis.StorageNodeGUI
     end
   end
 
   -- @See BaseNode:InsertItems
-  function StorageNodeHandler:InsertItems(stack, simulate)
+  function StorageNodeHandlerController:InsertItems(stack, simulate)
     if (self.ReadOnlyMode) then
       return 0
     end
@@ -38,7 +32,7 @@ return function(BaseHandler)
   end
 
   -- @See BaseNode:ExtractItems
-  function StorageNodeHandler:ExtractItems(stack, simulate)
+  function StorageNodeHandlerController:ExtractItems(stack, simulate)
     local inv = self.Entity.get_inventory(defines.inventory.chest)
     local removed = inv.remove(stack)
     if (simulate and removed > 0) then
@@ -48,13 +42,13 @@ return function(BaseHandler)
   end
 
   -- @See BaseNode:GetItemCount
-  function StorageNodeHandler:GetItemCount(itemName)
+  function StorageNodeHandlerController:GetItemCount(itemName)
     local inv = self.Entity.get_inventory(defines.inventory.chest)
     return inv.get_item_count(itemName)
   end
 
   -- @See BaseNode:GetContents
-  function StorageNodeHandler:GetContents(catalog)
+  function StorageNodeHandlerController:GetContents(catalog)
     local inv = self.Entity.get_inventory(defines.inventory.chest)
     -- Get total slot count
     local totalSlots = #inv
@@ -81,7 +75,7 @@ return function(BaseHandler)
   end
 
   -- OnPasteSettings( Self,  LuaEntity ) :: void
-  function StorageNodeHandler:OnPasteSettings(sourceEntity)
+  function StorageNodeHandlerController:OnPasteSettings(sourceEntity)
     -- Is this node forced read-only?
     if (ForceReadOnly(self)) then
       return
@@ -99,7 +93,7 @@ return function(BaseHandler)
   end
 
  -- OnPasteSettingsWithNode( Self,  Node ) :: void
- function StorageNodeHandler:OnPasteSettingsWithNode(sourceNode)
+ function StorageNodeHandlerController:OnPasteSettingsWithNode(sourceNode)
   -- Is this node forced read-only?
   if (ForceReadOnly(self)) then
     return
@@ -117,25 +111,23 @@ end
   
 
   -- @See BaseNode.NewNode
-  function StorageNodeHandler.NewNode(entity)
-    return StorageNodeHandler.EnsureStructure(BaseHandler.NewNode(entity))
+  function StorageNodeHandlerController.NewNode(entity)
+    return StorageNodeHandlerController.EnsureStructure(StorageNodeHandlerController._super.NewNode(entity))
   end
 
   -- Returns if the node is read only or not
-  function StorageNodeHandler:IsReadOnly()
+  function StorageNodeHandlerController:IsReadOnly()
     return self.ReadOnlyMode
   end
 
   -- @See BaseNode:EnsureStructure
-  function StorageNodeHandler:EnsureStructure()
-    BaseHandler.EnsureStructure(self)
-    self.HandlerName = StorageNodeHandler.HandlerName
+  function StorageNodeHandlerController:EnsureStructure()
+    StorageNodeHandlerController._super.EnsureStructure(self)
+
     if (ForceReadOnly(self) or SE.Settings.ReadOnlyStorageChest) then
       self.ReadOnlyMode = true
     end
-    --self.ReadOnlyMode = nil
+
     return self
   end
 
-  return StorageNodeHandler
-end
