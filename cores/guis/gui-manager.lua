@@ -10,7 +10,7 @@ return function()
     SEGuiManager.Guis.BaseGui = (require "cores.guis.base-gui")()
     SEGuiManager.Guis.InterfaceNodeGUI = (require "cores.guis.interface-node-gui")(SEGuiManager.Guis.BaseGui)
     SEGuiManager.Guis.StorageNodeGUI = (require "cores.guis.storage-node-gui")(SEGuiManager.Guis.BaseGui)
-    SEGuiManager.Guis.NetworkOverview = (require "cores.guis.network-overview")(SEGuiManager.Guis.BaseGui)
+    SEGuiManager.Guis.NetworkOverview = (require "cores.guis.network-overview-gui")(SEGuiManager.Guis.BaseGui)
 
     -- Map( PlayerIndex :: uint -> { GuiHandler :: SEGuiManager, GuiData :: Any } ) )
     -- Tracks which GUI players have open, and each Guis data
@@ -24,16 +24,16 @@ return function()
         local entity = event.entity
 
         -- Does that entity have a node handler?
-        local handler = SE.NodeHandlersRegistry.GetEntityHandler(entity)
+        local handler = RSE.NodeHandlersRegistry:GetEntityHandler(entity)
         if (handler == nil) then
             -- Not a network node
             return
         end
 
         -- Get the node for the entity
-        local node = SE.NetworksManager.GetNodeForEntity(entity)
+        local node = RSE.NetworksManager.GetNodeForEntity(entity)
         if (node == nil) then
-            error("Storage Energistics: Player Opened An Unregistered Entity")
+            error("RE:Storage Energistics: Player Opened An Unregistered Entity")
         end
 
         -- Ask the handler for a GUI

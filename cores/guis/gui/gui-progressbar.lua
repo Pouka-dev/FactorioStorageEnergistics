@@ -14,7 +14,7 @@ GuiProgressBar = newclass(GuiElement,function(base,...)
   GuiElement.init(base,...)
   base.classname = "SEGuiProgressBar"
   base.options.type = "progressbar"
-  base.options.style = SE.Constants.Names.Styles.Progressbars.SEProgressbarDefault
+  base.options.style = RSE.Constants.Names.Styles.Progressbars.SEProgressbarDefault
   base.options.tooltip = ""
 end)
 

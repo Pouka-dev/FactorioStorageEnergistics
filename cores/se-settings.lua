@@ -1,16 +1,16 @@
-return function()
-    SESettings = {
-        NodeIdlePowerDrain = 5,
-        PowerPerItem = 1000,
-        PowerPerChunk = 50,
-        TickRate = 30,
-        ReadOnlyStorageChest = true,
-        ModDifficulty = "Normal"
+SESettingsConstructor = newclass(Object, function(base, ...)
+    Object.init(base, ...)
+    base.NodeIdlePowerDrain = 5
+    base.PowerPerItem = 1000
+    base.PowerPerChunk = 50
+    base.TickRate = 42
+    base.ReadOnlyStorageChest = true
+    base.ModDifficulty = "Normal"
+end)
 
-    }
 
     -- Called to load or reload the mod settings
-    function SESettings.LoadSettings(event)
+    function SESettingsConstructor:LoadSettings(event)
         -- Main
         local RodDifficulty = settings.startup["se-mod_difficulty"].value
         -- Global
@@ -25,7 +25,7 @@ return function()
            local modSettings =  Player.load(event).getModSettings()
 
            if (event.setting_type == "runtime-per-user") then 
-            for settings_name, settings in pairs(Constants.Settings.se_settings_mod) do
+            for settings_name, settings in pairs(RSE.Constants.Settings.se_settings_mod) do
                 if (settings.setting_type == "runtime-per-user" and "se-read_only_storage" == "se-"..settings_name) then 
                     ReadOnlyStorageChest =  modSettings["se-read_only_storage"].value
                 end
@@ -33,18 +33,16 @@ return function()
            end
         end
         -- Main
-        SESettings.ModDifficulty = RodDifficulty
+        self.ModDifficulty = RodDifficulty
         -- Global
-        SESettings.NodeIdlePowerDrain = NodeIdlePowerDrain
-        SESettings.PowerPerItem = PowerPerItem
-        SESettings.PowerPerChunk = PowerPerChunk
-        SESettings.TickRate = TickRate
+        self.NodeIdlePowerDrain = NodeIdlePowerDrain
+        self.PowerPerItem = PowerPerItem
+        self.PowerPerChunk = PowerPerChunk
+        self.TickRate = TickRate
         -- Player
-        SESettings.ReadOnlyStorageChest = ReadOnlyStorageChest
+        self.ReadOnlyStorageChest = ReadOnlyStorageChest
     end
 
-    -- Load the settings upon creation
-    SESettings.LoadSettings()
+    
 
-    return SESettings
-end
+

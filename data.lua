@@ -1,7 +1,7 @@
 -- Description: Data inclusions
 
 --- Constants
-Constants = (require 'cores.constants.constants')()
+Constants = require ('cores.constants.constants')
 --- Groups
 require('prototypes.item-groups')
 --- Items

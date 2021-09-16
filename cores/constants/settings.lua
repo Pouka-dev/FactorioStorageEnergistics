@@ -43,8 +43,9 @@ Settings = {
             type = "int-setting",
             setting_type = "runtime-global",
             localised_name = {"se_global_settings.se-game-ticks-per-network-tick"},
-            default_value = 30,
-            minimum_value = 1,
+            localised_description = {"se_global_settings_descriptions.se-game-ticks-per-network-tick"},
+            default_value = 42,
+            minimum_value = 25,
             order = "a-d"
         },
         -- Player

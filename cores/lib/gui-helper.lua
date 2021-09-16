@@ -9,23 +9,23 @@ function AddCountToSlot(slot, count)
   local countStr = (count and NumberToStringWithSuffix(count)) or ""
 
   -- Top-left shadow
-  local tlShadow = GuiElement.add(slot, GuiLabel(SE.Constants.Names.Gui.GUIHelper.TLShadow)
-    :style(SE.Constants.Names.Styles.Labels.SEElecticUsageLabelTL):ignored_by_interaction(true):caption(countStr))
+  local tlShadow = GuiElement.add(slot, GuiLabel(RSE.Constants.Names.Gui.GUIHelper.TLShadow)
+    :style(RSE.Constants.Names.Styles.Labels.SEElecticUsageLabelTL):ignored_by_interaction(true):caption(countStr))
     
   -- Bottom-right shadow
-  local brShadow = GuiElement.add(slot, GuiLabel(SE.Constants.Names.Gui.GUIHelper.BRShadow)
-    :style(SE.Constants.Names.Styles.Labels.SEElecticUsageLabelBR):ignored_by_interaction(true):caption(countStr))
+  local brShadow = GuiElement.add(slot, GuiLabel(RSE.Constants.Names.Gui.GUIHelper.BRShadow)
+    :style(RSE.Constants.Names.Styles.Labels.SEElecticUsageLabelBR):ignored_by_interaction(true):caption(countStr))
 
   -- Foreground
-  local numLabel = GuiElement.add(slot, GuiLabel(SE.Constants.Names.Gui.GUIHelper.Count)
-    :style(SE.Constants.Names.Styles.Labels.SEElecticUsageLabelCount):ignored_by_interaction(true):caption(countStr))
+  local numLabel = GuiElement.add(slot, GuiLabel(RSE.Constants.Names.Gui.GUIHelper.Count)
+    :style(RSE.Constants.Names.Styles.Labels.SEElecticUsageLabelCount):ignored_by_interaction(true):caption(countStr))
 
   return {TLS = tlShadow, BRS = brShadow, Label = numLabel}
 end
 
 function UpdateSlotCount(slot, count)
   local countStr = (count and NumberToStringWithSuffix(count)) or ""
-  slot[SE.Constants.Names.Gui.GUIHelper.Count].caption = countStr
-  slot[SE.Constants.Names.Gui.GUIHelper.BRShadow].caption = countStr
-  slot[SE.Constants.Names.Gui.GUIHelper.TLShadow].caption = countStr
+  slot[RSE.Constants.Names.Gui.GUIHelper.Count].caption = countStr
+  slot[RSE.Constants.Names.Gui.GUIHelper.BRShadow].caption = countStr
+  slot[RSE.Constants.Names.Gui.GUIHelper.TLShadow].caption = countStr
 end

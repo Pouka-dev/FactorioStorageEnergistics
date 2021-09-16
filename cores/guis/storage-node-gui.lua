@@ -1,8 +1,8 @@
 -- Description:
 
 
-local ConstantsStringsLocal = SE.Constants.Strings.Local
-local StorageChestGUI = SE.Constants.Names.Gui.StorageChest
+local ConstantsStringsLocal = RSE.Constants.Strings.Local
+local StorageChestGUI = RSE.Constants.Names.Gui.StorageChest
 
 
 -- Constructs and returns the StorageNodeGUI object

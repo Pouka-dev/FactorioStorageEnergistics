@@ -1,22 +1,20 @@
-return function()
-    Store = {
-        Nodes = nil
-    }
+SEStoreConstructor = newclass(Object, function(base, ...)
+    Object.init(base, ...)
+    base.Nodes = nil
+end)
 
-    function Store.OnInit()
+    function SEStoreConstructor:OnInit()
         -- Nodes
         if (global.Nodes == nil) then
             global.Nodes = {}
         end
-        Store.OnLoad()
+        SEStoreConstructor:OnLoad()
     end
 
-    function Store.OnLoad()
+    function SEStoreConstructor:OnLoad()
         if (global.Nodes == nil) then
             global.Nodes = {}
         end
-        Store.Nodes = global.Nodes
+        SEStoreConstructor.Nodes = global.Nodes
     end
 
-    return Store
-end

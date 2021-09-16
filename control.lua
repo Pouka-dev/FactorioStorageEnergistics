@@ -1,88 +1,106 @@
 -------------- include libs ---------------
 require ("mod-gui")
+require ("util")
 require ("cores.lib.class")
+require ("cores.lib.fpairs")
 require ("cores.models.player")
 require ("cores.lib.Object")
+require ("cores.lib.energy-helper")
+require ("cores.lib.transfert-helper")
 
--------------- include handlers --------------
-require "cores.handlers.nodes.base-node-handler"
-require "cores.handlers.nodes.controller-node-handler"
-require "cores.handlers.nodes.energy-acceptor-node-handler"
-require "cores.handlers.nodes.storage-node-handler"
-require "cores.handlers.nodes.interface-node-handler"
+
+-------------- include core --------------
+require ("cores.se-settings")
+require ("cores.se-data-store")
+require ("cores.handlers.networks-manager")
+require ("cores.handlers.base-network-handler")
+
+-------------- include handlers registry --------------
+require ("cores.handlers.handlers-registry")
+
+-------------- include handlers node --------------
+require ("cores.handlers.nodes.base-node-handler")
+require ("cores.handlers.nodes.controller-node-handler")
+require ("cores.handlers.nodes.energy-acceptor-node-handler")
+require ("cores.handlers.nodes.storage-node-handler")
+require ("cores.handlers.nodes.interface-node-handler")
+
+
 
 --- Create the instance container
-SE = {
+RSE = {
     -- Map<ItemName :: string -> MaxStackSize :: int>
     StackSizeCache = {}
 }
 
-function SE.CachePrototypes()
+function RSE.CachePrototypes()
     -- Get item stack sizes
     for name, proto in pairs(game.item_prototypes) do
-        SE.StackSizeCache[name] = proto.stack_size
+        RSE.StackSizeCache[name] = proto.stack_size
     end
 end
 
 -- Create the logger
-SE.Logger = (require "cores.lib.logger")()
+RSE.Logger = require ("cores.lib.logger")
 -- Log trace messages
-SE.Logger.EnableTrace = false
-SE.Logger.EnableLogging = true
+RSE.Logger.EnableTrace = false
+RSE.Logger.EnableLogging = false
 
 
 --- Create constants
-SE.Constants = (require 'cores.constants.constants')()
+RSE.Constants = require ("cores.constants.constants")
 
 --- Get settings
-SE.Settings = (require "cores.se-settings")()
-
+RSE.Settings = SESettingsConstructor("RSESettings")
+-- Load the settings upon creation
+RSE.Settings:LoadSettings()
 --- Create the data store
-SE.DataStore = (require "cores.se-data-store")()
+RSE.DataStore = SEStoreConstructor("RSEDataStore")
 
 --- Create the storage networks manager
-SE.NetworksManager = (require "cores.handlers.networks-manager")()
+RSE.NetworksManager = NetworksManagerObjectConstructor("RSENetworksManager")
 
 --- Create the storage network handler
-SE.NetworkHandler = (require "cores.handlers.network-handler")()
+RSE.NetworkHandler = BaseNetworkHandlerConstructor("RSEBaseNetworkHandler")
 
---- Create node handlers
-SE.NodeHandlersRegistry = (require "cores.handlers.handlers-registry")()
+-------------- Create Node Handlers Registry--------------
+RSE.NodeHandlersRegistry = NodeHandlersRegistryConstructor("RSENodeHandlersRegistry")
 
--------------- instances Handlers --------------
-BaseNodeHandler = BaseNodeHandlerController(SE.Constants.Names.NodeHandlers.Base)
-local ControllerNodeHandlers = ControllerNodeHandlersController(SE.Constants.Names.NodeHandlers.Controller)
-local EnergyAcceptorNodeHandler = EnergyAcceptorNodeHandlerController(SE.Constants.Names.NodeHandlers.EnergyAcceptor)
-local StorageNodeHandler = StorageNodeHandlerController(SE.Constants.Names.NodeHandlers.Storage)
-local InterfaceNodeHandler = InterfaceNodeHandlerController(SE.Constants.Names.NodeHandlers.Interface)
+-------------- instances node Handlers --------------
+BaseNodeHandler = BaseNodeHandlerConstructor(RSE.Constants.Names.NodeHandlers.Base)
+ControllerNodeHandlers = ControllerNodeHandlersConstructor(RSE.Constants.Names.NodeHandlers.Controller)
+EnergyAcceptorNodeHandler = EnergyAcceptorNodeHandlerConstructor(RSE.Constants.Names.NodeHandlers.EnergyAcceptor)
+StorageNodeHandler = StorageNodeHandlerConstructor(RSE.Constants.Names.NodeHandlers.Storage)
+InterfaceNodeHandler = InterfaceNodeHandlerConstructor(RSE.Constants.Names.NodeHandlers.Interface)
 
--------------- Handler Registry --------------
-SE.NodeHandlersRegistry.AddHandler(BaseNodeHandler)
-SE.NodeHandlersRegistry.AddHandler(ControllerNodeHandlers)
-SE.NodeHandlersRegistry.AddHandler(EnergyAcceptorNodeHandler)
-SE.NodeHandlersRegistry.AddHandler(StorageNodeHandler)
-SE.NodeHandlersRegistry.AddHandler(InterfaceNodeHandler)
+-------------- Registry node Handlers --------------
+RSE.NodeHandlersRegistry:AddHandler(BaseNodeHandler)
+RSE.NodeHandlersRegistry:AddHandler(ControllerNodeHandlers)
+RSE.NodeHandlersRegistry:AddHandler(EnergyAcceptorNodeHandler)
+RSE.NodeHandlersRegistry:AddHandler(StorageNodeHandler)
+RSE.NodeHandlersRegistry:AddHandler(InterfaceNodeHandler)
 
 
 --- Link node handlers with entities
-local protoNames = SE.Constants.Names.Proto
-local handlerNames = SE.Constants.Names.NodeHandlers
-SE.NodeHandlersRegistry.AddEntityHandler(protoNames.Controller.Entity, handlerNames.Controller)
-SE.NodeHandlersRegistry.AddEntityHandler(protoNames.EnergyAcceptor.Entity, handlerNames.EnergyAcceptor)
-SE.NodeHandlersRegistry.AddEntityHandler(protoNames.StorageChestMk1.Entity, handlerNames.Storage)
-SE.NodeHandlersRegistry.AddEntityHandler(protoNames.StorageChestMk2.Entity, handlerNames.Storage)
-SE.NodeHandlersRegistry.AddEntityHandler(protoNames.RequesterChest.Entity, handlerNames.Storage)
-SE.NodeHandlersRegistry.AddEntityHandler(protoNames.InterfaceChest.Entity, handlerNames.Interface)
-SE.NodeHandlersRegistry.AddEntityHandler(protoNames.ProviderChest.Entity, handlerNames.Interface)
+local protoNames = RSE.Constants.Names.Proto
+local handlerNames = RSE.Constants.Names.NodeHandlers
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.Controller.Entity, handlerNames.Controller)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.EnergyAcceptor.Entity, handlerNames.EnergyAcceptor)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.StorageChestMk1.Entity, handlerNames.Storage)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.StorageChestMk2.Entity, handlerNames.Storage)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.RequesterChest.Entity, handlerNames.Storage)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.InterfaceChest.Entity, handlerNames.Interface)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.ProviderChest.Entity, handlerNames.Interface)
 
 --- Create the Gui manager
-SE.GuiManager = (require "cores.guis.gui-manager")()
+
+RSE.GuiManager = (require "cores.guis.gui-manager")()
 
 --- Create the game event manager
-SE.GameEventManager = (require "cores.game-events.game-events-manager")()
+RSE.GameEventManager = (require "cores.game-events.game-events-manager")()
 
 require "cores.guis.guis"
 
 
 --- Register for events
-SE.GameEventManager.RegisterHandlers()
+RSE.GameEventManager.RegisterHandlers()

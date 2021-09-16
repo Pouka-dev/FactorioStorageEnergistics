@@ -1,6 +1,6 @@
 
 
-return function()
+
     -- What things are called
     local Names = require("cores.constants.names")
 
@@ -19,7 +19,7 @@ return function()
     -- Settings
     local Settings = require("cores.constants.settings")
 
-    Constants = {
+    local Constants = {
         Names = Names,
         Strings = Strings,
         DataPaths = Paths,
@@ -27,9 +27,4 @@ return function()
         Variables = Variables,
         Settings = Settings
     }
-    return Constants
-
-
-    
-    
-end
+    return Constants 

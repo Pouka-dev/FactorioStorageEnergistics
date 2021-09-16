@@ -1,7 +1,7 @@
-Constants = require("cores.constants.constants")()
+Constants = require("cores.constants.constants")
 -- Description: Gameplay settings
 Settings = {
-    classname = "SESettings",
+    classname = "SESettingsGenerator",
 }
 
 for settings_name, settings in pairs(Constants.Settings.se_settings_mod) do
