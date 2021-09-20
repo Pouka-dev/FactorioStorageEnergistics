@@ -40,6 +40,9 @@ function RSE.CachePrototypes()
     end
 end
 
+
+
+
 -- Create the logger
 RSE.Logger = require ("cores.lib.logger")
 -- Log trace messages
@@ -86,11 +89,25 @@ local protoNames = RSE.Constants.Names.Proto
 local handlerNames = RSE.Constants.Names.NodeHandlers
 RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.Controller.Entity, handlerNames.Controller)
 RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.EnergyAcceptor.Entity, handlerNames.EnergyAcceptor)
+
 RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.StorageChestMk1.Entity, handlerNames.Storage)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.StorageChestLargeMk1.Entity, handlerNames.Storage)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.StorageChestWarehousingMk1.Entity, handlerNames.Storage)
+
 RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.StorageChestMk2.Entity, handlerNames.Storage)
-RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.RequesterChest.Entity, handlerNames.Storage)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.StorageChestLargeMk2.Entity, handlerNames.Storage)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.StorageChestWarehousingMk2.Entity, handlerNames.Storage)
+
 RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.InterfaceChest.Entity, handlerNames.Interface)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.InterfaceChestLarge.Entity, handlerNames.Interface)
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.InterfaceChestWarehousing.Entity, handlerNames.Interface)
+
+RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.RequesterChest.Entity, handlerNames.Storage)
 RSE.NodeHandlersRegistry:AddEntityHandler(protoNames.ProviderChest.Entity, handlerNames.Interface)
+
+
+
+
 
 --- Create the Gui manager
 

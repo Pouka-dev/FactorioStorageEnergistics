@@ -1,4 +1,22 @@
 -- Description: Data inclusions
+normalChest = circuit_connector_definitions["chest"]
+largeChest = circuit_connector_definitions.create
+(
+  universal_connector_template,
+  {
+    
+    { variation = 26, main_offset = util.by_pixel(30, 30), shadow_offset = util.by_pixel(22.5, 30), show_shadow = true }
+  }
+)
+
+warehousingChest = circuit_connector_definitions.create
+(
+  universal_connector_template,
+  {
+    
+    { variation = 26, main_offset = util.by_pixel(80, 80), shadow_offset = util.by_pixel(67.5, 90), show_shadow = true }
+  }
+)
 
 --- Constants
 Constants = require ('cores.constants.constants')
@@ -14,11 +32,12 @@ require('prototypes.technologies.technologies')
 --- Entities
 require('prototypes.entities.se-controller')
 require('prototypes.entities.se-energy-acceptor')
+
 require('prototypes.entities.se-interface-chest')
+require('prototypes.entities.storage-chest')
+
 require('prototypes.entities.se-provider-chest')
 require('prototypes.entities.se-requester-chest')
-require('prototypes.entities.storage-chest-mk1')
-require('prototypes.entities.storage-chest-mk2')
 
 --- Styles
 require("prototypes.styles")

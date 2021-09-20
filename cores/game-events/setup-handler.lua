@@ -23,8 +23,7 @@ end
 -- Register a callback to be run on mod init.
 -- This is called once when a new save game is created or once when a save file is loaded that previously didn't contain the mod.
 -- This is always called before other event handlers and is meant for setting up initial values that a mod will use for its lifetime.
-function SetupHandlers.OnGameInit(event)
-    
+function SetupHandlers.OnGameInit(event)    
     --- local freeplay = remote.interfaces["freeplay"]
     --- if freeplay then
     ---     -- Disable freeplay popup-message

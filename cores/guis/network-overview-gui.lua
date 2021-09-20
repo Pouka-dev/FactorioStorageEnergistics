@@ -192,11 +192,17 @@ return function(BaseGUI)
                 idx = idx - 1
             end
             -- Assign dropdown list
-            guiData.FrameData.NetworkDropDown.items = ddList
-            guiData.FrameData.NetworkDropDown.selected_index = 1
-            
-            -- Load the first network
+            if next(ddList) then
+                guiData.FrameData.NetworkDropDown.items = ddList
+                guiData.FrameData.NetworkDropDown.selected_index = 1
+
+                -- Load the first network
             LoadNetworkContents(guiData, tick)
+            end
+            
+
+            
+            
         end
     end
     

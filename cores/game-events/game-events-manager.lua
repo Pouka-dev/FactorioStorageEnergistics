@@ -29,6 +29,27 @@ return function()
     --- Called when the game ticks for the first time for this load.
     function GameEventManager.OnFirstTick(event)
         RSE.CachePrototypes()
+
+        local handlerNames = RSE.Constants.Names.NodeHandlers
+        if (game.active_mods['Warehousing']) then
+            RSE.NodeHandlersRegistry:AddEntityHandler("storehouse-basic", handlerNames.Storage)
+            RSE.NodeHandlersRegistry:AddEntityHandler("warehouse-basic", handlerNames.Storage)
+
+            RSE.NodeHandlersRegistry:AddEntityHandler("storehouse-buffer", handlerNames.Interface)
+            RSE.NodeHandlersRegistry:AddEntityHandler("warehouse-buffer", handlerNames.Interface)
+        end
+        if (game.active_mods['pyindustry']) then
+            RSE.NodeHandlersRegistry:AddEntityHandler("py-shed-basic", handlerNames.Storage)
+            RSE.NodeHandlersRegistry:AddEntityHandler("py-deposit-basic", handlerNames.Storage)
+            RSE.NodeHandlersRegistry:AddEntityHandler("py-storehouse-basic", handlerNames.Storage)
+            RSE.NodeHandlersRegistry:AddEntityHandler("py-warehouse-basic", handlerNames.Storage)
+
+            RSE.NodeHandlersRegistry:AddEntityHandler("py-shed-buffer", handlerNames.Interface)
+            RSE.NodeHandlersRegistry:AddEntityHandler("py-deposit-buffer", handlerNames.Interface)
+            RSE.NodeHandlersRegistry:AddEntityHandler("py-storehouse-buffer", handlerNames.Interface)
+            RSE.NodeHandlersRegistry:AddEntityHandler("py-warehouse-buffer", handlerNames.Interface)
+        end
+
         RSE.NetworksManager.FirstTick()
 
         -- Pass tick on to regular handler

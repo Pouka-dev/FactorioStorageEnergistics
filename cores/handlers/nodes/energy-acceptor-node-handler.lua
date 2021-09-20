@@ -84,6 +84,8 @@ end
 
 -- @See BaseNode.NewNode
 function EnergyAcceptorNodeHandlerConstructor.NewNode(entity)
+    -- Prevent player interaction with the Controller GUI
+    --entity.operable = false
     local node = EnergyAcceptorNodeHandlerConstructor._super.NewNode(entity)
     EnergyAcceptorNodeHandlerConstructor.EnsureStructure(node)
     return node
@@ -91,6 +93,8 @@ end
 
 -- @See BaseNode:EnsureStructure
 function EnergyAcceptorNodeHandlerConstructor:EnsureStructure()
+    -- Prevent player interaction with the Controller GUI
+    self.Entity.operable = false
     EnergyAcceptorNodeHandlerConstructor._super.EnsureStructure(self)
     -- Name of the handler that implements functionality
     self.HandlerName = EnergyAcceptorNodeHandler.HandlerName

@@ -63,7 +63,8 @@ seControllerE.sprites = {
         width = 79,
         height = 63,
         frame_count = 1,
-        shift = { 0.42017, 0.14063 }
+        shift = { 0.42017, 0 }
+        --shift = { 0.42017, 0.14063 }
     },
     west = {
         filename = Constants.DataPaths.EntityGFX .. "se-controller.png",
@@ -72,7 +73,8 @@ seControllerE.sprites = {
         width = 79,
         height = 63,
         frame_count = 1,
-        shift = { 0.42017, 0.14063 }
+        shift = { 0.42017, 0 }
+        --shift = { 0.42017, 0.14063 }
     },
     north = {
         filename = Constants.DataPaths.EntityGFX .. "se-controller.png",
@@ -81,7 +83,8 @@ seControllerE.sprites = {
         width = 79,
         height = 63,
         frame_count = 1,
-        shift = { 0.42017, 0.14063 }
+        shift = { 0.42017, 0 }
+        --shift = { 0.42017, 0.14063 }
     },
     south = {
         filename = Constants.DataPaths.EntityGFX .. "se-controller.png",
@@ -90,7 +93,8 @@ seControllerE.sprites = {
         width = 79,
         height = 63,
         frame_count = 1,
-        shift = { 0.42017, 0.14063 }
+        shift = { 0.42017, 0 }
+        --shift = { 0.42017, 0.14063 }
     }
 }
 seControllerE.activity_led_sprites = {
@@ -99,28 +103,32 @@ seControllerE.activity_led_sprites = {
         width = 32,
         height = 8,
         frame_count = 1,
-        shift = { 0.296875, -0.40625 }
+        shift = { 0.296875, 0 }
+        --shift = { 0.296875, -0.40625 }
     },
     east = {
         filename = "__base__/graphics/entity/combinator/activity-leds/arithmetic-combinator-LED-E.png",
         width = 32,
         height = 8,
         frame_count = 1,
-        shift = { 0.25, -0.03125 }
+        shift = { 0.25, 0 }
+        --shift = { 0.25, -0.03125 }
     },
     south = {
         filename = "__base__/graphics/entity/combinator/activity-leds/arithmetic-combinator-LED-S.png",
         width = 32,
         height = 8,
         frame_count = 1,
-        shift = { -0.296875, -0.078125 }
+        shift = { -0.296875, 0 }
+        --shift = { -0.296875, -0.078125 }
     },
     west = {
         filename = "__base__/graphics/entity/combinator/activity-leds/arithmetic-combinator-LED-W.png",
         width = 32,
         height = 8,
         frame_count = 1,
-        shift = { -0.21875, -0.46875 }
+        shift = { -0.21875, 0 }
+        --shift = { -0.21875, -0.46875 }
     }
 }
 seControllerE.activity_led_light = {

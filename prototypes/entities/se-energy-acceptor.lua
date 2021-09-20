@@ -90,16 +90,7 @@ seEnergyAcceptorE.discharge_animation = {
 }
 seEnergyAcceptorE.discharge_cooldown = 30
 seEnergyAcceptorE.discharge_light = { intensity = 0.0, size = 1 }
-seEnergyAcceptorE.circuit_wire_connection_point = {
-    shadow = {
-        red = { 0.984375, 1.10938 },
-        green = { 0.890625, 1.10938 }
-    },
-    wire = {
-        red = { 0.7175, 0.59375 },
-        green = { 0.6575, 0.71875 }
-    }
-}
+seEnergyAcceptorE.circuit_wire_connection_point = circuit_connector_definitions["accumulator"].points
 seEnergyAcceptorE.circuit_connector_sprites = circuit_connector_definitions["accumulator"].sprites
 seEnergyAcceptorE.circuit_wire_max_distance = 9
 seEnergyAcceptorE.vehicle_impact_sound = { filename = "__base__/sound/car-metal-impact.ogg", volume = 0.7 }

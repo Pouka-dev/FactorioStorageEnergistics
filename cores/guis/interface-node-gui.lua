@@ -22,9 +22,9 @@ return function(BaseGUI)
     -- 10 and 20 thousand
     SliderSteps[#SliderSteps + 1] = 10000
     SliderSteps[#SliderSteps + 1] = 20000
-
-
-
+    
+    
+    
     -- Sets the amount for the currently selected item
     local function SetFilterAmount(guiData, amount)
         -- Slot with filter selected?
@@ -35,9 +35,9 @@ return function(BaseGUI)
         guiData.Node.RequestFilters[guiData.SelectedIndex].Amount = amount or 0
         -- Update label
         UpdateSlotCount(guiData.Slots[guiData.SelectedIndex], amount)
-      
+    
     end
-
+    
     -- Sets the amount for the currently selected item
     local function SetFilterAmountMinForCall(guiData, amount)
         -- Slot with filter selected?
@@ -71,7 +71,7 @@ return function(BaseGUI)
         end
         guiData.AmountSlider.slider_value = step
     end
-
+    
     -- Set the text shown in the amount field
     local function SetAmountMinForCallText(guiData, text)
         -- Is there no selection?
@@ -83,10 +83,10 @@ return function(BaseGUI)
         if (noSelection) then
             text = "1"
         end
-
+        
         guiData.AmountMinForCall.text = text or ""
         guiData.PreviousAmountMinForCall = guiData.AmountMinForCall.text
-      
+    
     end
     
     -- Set the text shown in the amount field
@@ -101,22 +101,22 @@ return function(BaseGUI)
         if (noSelection) then
             text = "1"
         end
-       
+        
         guiData.AmountTextfield.text = text or ""
         guiData.PreviousAmountText = guiData.AmountTextfield.text
         
         local isNotNull = (guiData.AmountMinForCall ~= nil and text ~= nil)
-        if ( isNotNull and tonumber(guiData.AmountMinForCall.text) > tonumber(text)) then 
+        if (isNotNull and tonumber(guiData.AmountMinForCall.text) > tonumber(text)) then
             SetAmountMinForCallText(guiData, text)
-            SetFilterAmountMinForCall(guiData,  tonumber(text))
+            SetFilterAmountMinForCall(guiData, tonumber(text))
         else
             local amount = math.ceil(math.abs(tonumber(text) * 20 / 100))
             SetAmountMinForCallText(guiData, tostring(amount))
-            SetFilterAmountMinForCall(guiData,  amount)
+            SetFilterAmountMinForCall(guiData, amount)
         end
     end
-
-     
+    
+    
     
     -- Sets which slot is selected
     local function SetSelectedIndex(guiData, index)
@@ -145,7 +145,7 @@ return function(BaseGUI)
                 filterAmount = filter.Amount
                 filterAmountMinForCall = filter.AmountMinForCall
                 
-
+                
                 -- Set highlighted and unlocked
                 slot.style = "yellow_slot_button"
                 slot.locked = false
@@ -157,7 +157,7 @@ return function(BaseGUI)
         
         -- Set slider
         SetSliderValue(guiData, filterAmount)
-
+        
         -- Set amount
         SetAmountText(guiData, (filterAmount > 0 and tostring(filterAmount)) or "")
         SetAmountMinForCallText(guiData, (filterAmountMinForCall > 0 and tostring(filterAmountMinForCall)) or "")
@@ -173,7 +173,7 @@ return function(BaseGUI)
             -- Update slot
             slot.elem_value = filter.Item
             UpdateSlotCount(slot, filter.Amount)
-           
+        
         else
             -- Clear slot
             slot.elem_value = nil
@@ -189,13 +189,28 @@ return function(BaseGUI)
         end
     end
     
+    function getSlotCount(entityName)
+        local slotCount = 12
+        if (entityName == "entity-se-interface-chest" or entityName == "py-shed-buffer" or entityName == "py-storehouse-buffer") then
+            slotCount = 12
+        elseif (entityName == "entity-se-interface-chest-large" or entityName == "storehouse-buffer") then
+            slotCount = 24
+        elseif (entityName == "entity-se-interface-chest-warehousing" or entityName == "py-warehouse-buffer") then
+            slotCount = 30
+        elseif (entityName == "warehouse-buffer" or entityName == "py-deposit-buffer") then
+            slotCount = 40
+        end
+        return slotCount
+    end
+    
+    
     
     
     -- @See BaseGUI:OnShow
     function InterfaceNodeGUI:OnShow(event)
         Player.load(event)
         
-        local SLOT_COUNT = 12
+        local SLOT_COUNT = getSlotCount(event.entity.name)
         
         -- Create properties
         self.Slots = {}
@@ -225,7 +240,7 @@ return function(BaseGUI)
         local body = GuiElement.add(frame, GuiFlowV("body"))
         
         -- Create the inventory table
-        local invTable = GuiElement.add(body, GuiTable("invTable"):column(math.ceil(SLOT_COUNT / 2.0)))
+        local invTable = GuiElement.add(body, GuiTable("invTable"):column(6))
         
         -- Add selection slots
         local filters = self.Node.RequestFilters
@@ -351,10 +366,10 @@ return function(BaseGUI)
             -- Is the amount valid?
             if (amount == nil) then
                 -- Not numeric, restore last text
-                if(isAmount) then
-                txtBox.text = self.PreviousAmountText
+                if (isAmount) then
+                    txtBox.text = self.PreviousAmountText
                 end
-                if(not isAmount) then
+                if (not isAmount) then
                     txtBox.text = self.PreviousAmountMinForCall
                 end
                 return
@@ -363,16 +378,16 @@ return function(BaseGUI)
             -- Is numeric, clamp to range
             amount = math.max(math.min(amount, 20000), 0)
             
-            if (isAmount) then 
+            if (isAmount) then
                 SetAmountText(self, tostring(amount))
             end
-            if (not isAmount) then 
-                if (amount == nil or amount <= 0 ) then 
+            if (not isAmount) then
+                if (amount == nil or amount <= 0) then
                     txtBox.text = "1"
                     return
                 end
-                if (amount > tonumber(self.AmountTextfield.text) ) then 
-                    txtBox.text =  self.AmountTextfield.text
+                if (amount > tonumber(self.AmountTextfield.text)) then
+                    txtBox.text = self.AmountTextfield.text
                     return
                 end
                 -- math.ceil(math.abs(amount * 20 / 100))
@@ -380,12 +395,12 @@ return function(BaseGUI)
             end
         end
         -- Update filter
-        if (isAmount) then 
+        if (isAmount) then
             -- Update slider
             SetSliderValue(self, amount)
             SetFilterAmount(self, amount)
         end
-        if (not isAmount) then 
+        if (not isAmount) then
             SetFilterAmountMinForCall(self, amount)
         end
     end

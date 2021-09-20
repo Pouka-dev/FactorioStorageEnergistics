@@ -33,7 +33,9 @@ return function()
         -- Get the node for the entity
         local node = RSE.NetworksManager.GetNodeForEntity(entity)
         if (node == nil) then
-            error("RE:Storage Energistics: Player Opened An Unregistered Entity")
+            RSE.GameEventManager.Entity.Creation.OnEntityBuilt(entity, event)
+            node = RSE.NetworksManager.GetNodeForEntity(entity)
+            ---error("RE:Storage Energistics: Player Opened An Unregistered Entity")
         end
 
         -- Ask the handler for a GUI
