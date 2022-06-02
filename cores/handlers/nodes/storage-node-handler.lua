@@ -121,11 +121,12 @@ end
   end
 
   -- @See BaseNode:EnsureStructure
-  function StorageNodeHandlerConstructor:EnsureStructure()
+  function StorageNodeHandlerConstructor:EnsureStructure(isFirstTick)
     StorageNodeHandlerConstructor._super.EnsureStructure(self)
     -- Name of the handler that implements functionality
     self.HandlerName = StorageNodeHandler.HandlerName
-    if (ForceReadOnly(self) or RSE.Settings.ReadOnlyStorageChest) then
+    
+    if (not isFirstTick and (ForceReadOnly(self) or RSE.Settings.ReadOnlyStorageChest)) then
       self.ReadOnlyMode = true
     end
 

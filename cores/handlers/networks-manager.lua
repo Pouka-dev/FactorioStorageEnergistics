@@ -254,7 +254,7 @@ function NetworksManagerObjectConstructor.FirstTick()
         local handler = RSE.NodeHandlersRegistry:GetNodeHandler(node)
         
         -- Ensure the nodes structure is valid
-        handler.EnsureStructure(node)
+        handler.EnsureStructure(node, true)
         
         ValidateConnection(node, defines.wire_type.green)
         ValidateConnection(node, defines.wire_type.red)

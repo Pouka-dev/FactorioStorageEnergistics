@@ -1,19 +1,18 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.0
-Date: 16. 09. 2021
+Date: 20. 09. 2021
   Bugfixes:
-    - Only network in good statement appear in network gui
+    - Only network in good statement appear in network gui.
   Changes:
     - Management of transfert items
-    - Adding inpur filed in interface gui for trigger call transfert items. By default is 20% of amount requested
-    - In setting mod, tick rate minimum value is 25. But low tick increase lag...
+    - Adding inpur filed in interface gui for trigger call transfert items. By default is 20% of amount requested.
+    - In setting mod, tick rate minimum value is 25. But low tick increase lag.
+    - adaptation using Warehousing and py industrie mod. buffer chest equals interface (Re:Storage Network) and basic equals storage chest (Re:Storage Network).
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.2
 Date: 05. 09. 2021
   Bugfixes:
-      - Copy/Paste settings and blueprint
-  Changes:
-    - Nothing
+    - Copy/Paste settings and blueprint
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.1
 Date: 03. 09. 2021
