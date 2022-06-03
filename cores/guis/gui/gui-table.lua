@@ -14,7 +14,7 @@ GuiTable = newclass(GuiElement,function(base,...)
     GuiElement.init(base,...)
     base.classname = "SEGuiTable"
     base.options.type = "table"
-    base.options.style = SE.Constants.Names.Styles.Tables.SETableDefault
+    base.options.style = RSE.Constants.Names.Styles.Tables.SETableDefault
   end)
   
   -------------------------------------------------------------------------------

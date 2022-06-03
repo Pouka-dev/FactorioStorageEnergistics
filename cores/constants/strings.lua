@@ -22,5 +22,7 @@ Strings.Local.InterfaceSettings = {"text.storage-energistics-interface-settings"
 Strings.Local.NetCap = {"text.storage-energistics-net-cap"}
 Strings.Local.NetworkID = {"text.storage-energistics-network-id"}
 Strings.Local.Close = {"text.storage-energistics-close"}
+Strings.Local.InterfaceAmountMinForCall = {"text.storage-energistics-interface-min-amount-for-call"}
+Strings.Local.InterfaceAmountMinForCallDescription = {"text.storage-energistics-interface-min-amount-for-call_description"}
 
 return Strings

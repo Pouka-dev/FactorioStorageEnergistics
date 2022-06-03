@@ -1,8 +1,8 @@
 ---- Names
-local function GenNames(name, hasEntity)
+local function GenNames(name, hasEntity, order)
     local names = {
         ID = name,
-        Item = "item-" .. name,
+        Item = "item-" .. order .. name,
         Recipe = "recipe-" .. name
     }
     if (hasEntity) then
@@ -17,18 +17,28 @@ local Names = {}
 -- Prototype names
 Names.Proto = {}
 
-Names.Proto.PetroQuartz = GenNames("se-petroleum-quartz", false)
-Names.Proto.PhaseCoil = GenNames("se-phase-transition-coil", false)
-Names.Proto.Controller = GenNames("se-controller", true)
-Names.Proto.EnergyAcceptor = GenNames("se-energy-acceptor", true)
-Names.Proto.StorageChestMk1 = GenNames("se-chest-mk1", true)
-Names.Proto.InterfaceChest = GenNames("se-interface-chest", true)
+Names.Proto.PetroQuartz = GenNames("se-petroleum-quartz", false, "")
+Names.Proto.PhaseCoil = GenNames("se-phase-transition-coil", false, "")
+Names.Proto.PatternBuffer = GenNames("se-pattern-buffer", false, "")
 
-Names.Proto.PatternBuffer = GenNames("se-pattern-buffer", false)
-Names.Proto.StorageChestMk2 = GenNames("se-chest-mk2", true)
+Names.Proto.Controller = GenNames("se-controller", true, "")
+Names.Proto.EnergyAcceptor = GenNames("se-energy-acceptor", true, "")
 
-Names.Proto.ProviderChest = GenNames("se-provider-chest", true)
-Names.Proto.RequesterChest = GenNames("se-requester-chest", true)
+Names.Proto.StorageChestMk1 = GenNames("se-chest-mk1", true,"1")
+Names.Proto.StorageChestLargeMk1 = GenNames("se-chest-large-mk1", true, "2")
+Names.Proto.StorageChestWarehousingMk1 = GenNames("se-chest-warehousing-mk1", true,"3")
+
+Names.Proto.StorageChestMk2 = GenNames("se-chest-mk2", true,"4")
+Names.Proto.StorageChestLargeMk2 = GenNames("se-chest-large-mk2", true,"5")
+Names.Proto.StorageChestWarehousingMk2 = GenNames("se-chest-warehousing-mk2", true,"6")
+
+Names.Proto.InterfaceChest = GenNames("se-interface-chest", true, "")
+Names.Proto.InterfaceChestLarge = GenNames("se-interface-chest-large", true, "")
+Names.Proto.InterfaceChestWarehousing = GenNames("se-interface-chest-warehousing", true, "")
+
+
+Names.Proto.ProviderChest = GenNames("se-provider-chest", true, "")
+Names.Proto.RequesterChest = GenNames("se-requester-chest", true, "")
 
 -- Technology names
 Names.Tech = {}

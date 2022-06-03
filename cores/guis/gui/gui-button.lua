@@ -85,7 +85,7 @@ function GuiButton:onErrorOptions()
   --- options.style = "helmod_button_default"
   options.type = "button"
   if (type(options.caption) == "boolean") then
-    SE.Logger.Error(self.classname .. " : addGuiButton - caption is a boolean")
+    RSE.Logger.Error(self.classname .. " : addGuiButton - caption is a boolean")
   elseif self.m_caption ~= nil then
     options.caption = self.m_caption
   else

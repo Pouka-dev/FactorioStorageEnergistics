@@ -12,10 +12,10 @@ return function(BaseGUI)
     
     
     
-    local ConstantsStringsLocal = SE.Constants.Strings.Local
-    local ConstantsStyles = SE.Constants.Names.Styles
-    local NetworkOverview = SE.Constants.Names.Gui.NetworkOverview
-    local VariablesNetworkOverview = SE.Constants.Variables.NetworkOverview
+    local ConstantsStringsLocal = RSE.Constants.Strings.Local
+    local ConstantsStyles = RSE.Constants.Names.Styles
+    local NetworkOverview = RSE.Constants.Names.Gui.NetworkOverview
+    local VariablesNetworkOverview = RSE.Constants.Variables.NetworkOverview
     
     
     -- NewItemCell( LuaGuiElement ) :: ItemCell
@@ -36,7 +36,7 @@ return function(BaseGUI)
         AddCountToSlot(slot)
         
         -- Add the label
-        --- local itemLabel = GuiElement.add(itemCell, GuiLabel(NetworkOverview.ItemCellItemLabel):style(ConstantsStyles.Labels.SEItemTableItemLabel):caption(""))
+        local itemLabel = GuiElement.add(itemCell, GuiLabel(NetworkOverview.ItemCellItemLabel):style(ConstantsStyles.Labels.SEItemTableItemLabel):caption(""))
         
         
         return {Cell = itemCell, Slot = slot} --- , Label = itemLabel
@@ -138,18 +138,18 @@ return function(BaseGUI)
     -- Adds the contents of the network to the frame
     local function LoadNetworkContents(guiData, tick)
         -- Get the network
-        local network = SE.NetworksManager.GetNetwork(guiData.NetworkIDs[guiData.FrameData.NetworkDropDown.selected_index])
+        local network = RSE.NetworksManager.GetNetwork(guiData.NetworkIDs[guiData.FrameData.NetworkDropDown.selected_index])
         
         -- Query the network for the items
-        local networkContents = SE.NetworkHandler.GetStorageContents(network, tick)
+        local networkContents = RSE.NetworkHandler.GetStorageContents(network, tick)
         
         -- Extract capacity amounts
-        local totalSlots = networkContents[SE.Constants.Strings.TotalSlots]
-        local freeSlots = networkContents[SE.Constants.Strings.FreeSlots]
+        local totalSlots = networkContents[RSE.Constants.Strings.TotalSlots]
+        local freeSlots = networkContents[RSE.Constants.Strings.FreeSlots]
         
         -- Remove capacity amounts from item list
-        networkContents[SE.Constants.Strings.TotalSlots] = nil
-        networkContents[SE.Constants.Strings.FreeSlots] = nil
+        networkContents[RSE.Constants.Strings.TotalSlots] = nil
+        networkContents[RSE.Constants.Strings.FreeSlots] = nil
         
         -- Update capacity progress bar
         local capacityPercent = 0
@@ -166,7 +166,7 @@ return function(BaseGUI)
     -- Sets the networks in the dropdown
     local function UpdateDropdownNetworks(guiData, tick)
         -- Get network ids
-        guiData.NetworkIDs = SE.NetworksManager.GetNetworkIDs()
+        guiData.NetworkIDs = RSE.NetworksManager.GetNetworkIDs()
         
         local ddList = {}
         if (#guiData.NetworkIDs > 0) then
@@ -177,10 +177,10 @@ return function(BaseGUI)
                 local networkID = guiData.NetworkIDs[idx]
                 
                 -- Get the network
-                local network = SE.NetworksManager.GetNetwork(networkID)
+                local network = RSE.NetworksManager.GetNetwork(networkID)
                 
                 -- Ensure there are non-controller devices on the network
-                if SE.NetworkHandler.EmptyEmptyExceptControllers(network) then
+                if RSE.NetworkHandler.checkForDisplayNetworkOnNetworkGUI(network) then
                     -- Remove the empty network
                     table.remove(guiData.NetworkIDs, idx)
                 else
@@ -192,11 +192,17 @@ return function(BaseGUI)
                 idx = idx - 1
             end
             -- Assign dropdown list
-            guiData.FrameData.NetworkDropDown.items = ddList
-            guiData.FrameData.NetworkDropDown.selected_index = 1
-            
-            -- Load the first network
+            if next(ddList) then
+                guiData.FrameData.NetworkDropDown.items = ddList
+                guiData.FrameData.NetworkDropDown.selected_index = 1
+
+                -- Load the first network
             LoadNetworkContents(guiData, tick)
+            end
+            
+
+            
+            
         end
     end
     
@@ -293,7 +299,7 @@ return function(BaseGUI)
         local element = event.element
         
         if (element ~= nil and element.name == NetworkOverview.Close) then
-            SE.GuiManager.CloseGui(event.player_index)
+            RSE.GuiManager.CloseGui(event.player_index)
         end
     end
     

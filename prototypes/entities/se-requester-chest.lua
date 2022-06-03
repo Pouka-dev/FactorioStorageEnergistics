@@ -52,8 +52,6 @@ seRequesterChestE.max_health = 350
 seRequesterChestE.corpse = "small-remnants"
 seRequesterChestE.collision_box = { { -0.32, -0.32 }, { 0.32, 0.32 } }
 seRequesterChestE.selection_box = { { -0.5, -0.5 }, { 0.5, 0.5 } }
---collision_box = {{-2.7, -2.7}, {2.7, 2.7}},
---selection_box = {{-3.0, -3.0}, {3.0, 3.0}},
 seRequesterChestE.resistances = {
     {
         type = "fire",
@@ -76,22 +74,11 @@ seRequesterChestE.picture = {
     priority = "extra-high",
     width = 32,
     height = 32,
-    --width = 256,
-    --height = 256,
     shift = { 0, 0 }
 }
-seRequesterChestE.circuit_wire_connection_point = {
-    shadow = {
-        red = { 0.734375, 0.453125 },
-        green = { 0.609375, 0.515625 }
-    },
-    wire = {
-        red = { 0.44625, 0.21875 },
-        green = { 0.38625, 0.375 }
-    }
-}
-seRequesterChestE.circuit_wire_max_distance = 9
+seRequesterChestE.circuit_wire_connection_point = circuit_connector_definitions["chest"].points
 seRequesterChestE.circuit_connector_sprites = circuit_connector_definitions["chest"].sprites
+seRequesterChestE.circuit_wire_max_distance = 9
 
 --- IMPORT se-requester-chest ---
 data:extend { seRequesterChestI }

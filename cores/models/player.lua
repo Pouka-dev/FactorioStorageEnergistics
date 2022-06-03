@@ -113,7 +113,7 @@ end
 --
 function Player.isAdmin()
   if cur_player == nil then
-    SE.Logger.Error("Error in function Player.isAdmin: Lua_player == nil")
+    ---RSE.Logger.Error("Error in function Player.isAdmin: Lua_player == nil")
     return false
   end
   return cur_player.admin

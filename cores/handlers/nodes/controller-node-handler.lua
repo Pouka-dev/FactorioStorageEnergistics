@@ -1,25 +1,21 @@
 
-return function(BaseHandler)
-    local ControllerNodeHandlers = {
-        HandlerName = SE.Constants.Names.NodeHandlers.Controller,
-        Type = SE.Constants.NodeTypes.Controller
-    }
-    setmetatable(ControllerNodeHandlers, {__index = BaseHandler})
+ControllerNodeHandlersConstructor = newclass(BaseNodeHandlerConstructor,function(base,...)
+    BaseNodeHandler.init(base,...)
+    base.Type = RSE.Constants.NodeTypes.Controller
+  end)
 
     -- @See BaseNode.NewNode
-    function ControllerNodeHandlers.NewNode(entity)
+    function ControllerNodeHandlersConstructor.NewNode(entity)
         -- Prevent player interaction with the Controller GUI
         entity.operable = false
 
-        return ControllerNodeHandlers.EnsureStructure(BaseHandler.NewNode(entity))
+        return ControllerNodeHandlersConstructor.EnsureStructure(ControllerNodeHandlersConstructor._super.NewNode(entity))
     end
 
     -- @See BaseNode:EnsureStructure
-    function ControllerNodeHandlers:EnsureStructure()
-        BaseHandler.EnsureStructure(self)
+    function ControllerNodeHandlersConstructor:EnsureStructure()
+        ControllerNodeHandlersConstructor._super.EnsureStructure(self)
+        -- Name of the handler that implements functionality
         self.HandlerName = ControllerNodeHandlers.HandlerName
         return self
     end
-
-    return ControllerNodeHandlers
-end

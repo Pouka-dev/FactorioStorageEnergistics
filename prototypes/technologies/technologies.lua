@@ -109,8 +109,14 @@ researchSEStorageNetwork.effects = {
     {type = "unlock-recipe", recipe = Constants.Names.Proto.PhaseCoil.Recipe},
     {type = "unlock-recipe", recipe = Constants.Names.Proto.Controller.Recipe},
     {type = "unlock-recipe", recipe = Constants.Names.Proto.EnergyAcceptor.Recipe},
+
     {type = "unlock-recipe", recipe = Constants.Names.Proto.StorageChestMk1.Recipe},
-    {type = "unlock-recipe", recipe = Constants.Names.Proto.InterfaceChest.Recipe}
+    {type = "unlock-recipe", recipe = Constants.Names.Proto.StorageChestLargeMk1.Recipe},
+    {type = "unlock-recipe", recipe = Constants.Names.Proto.StorageChestWarehousingMk1.Recipe},
+
+    {type = "unlock-recipe", recipe = Constants.Names.Proto.InterfaceChest.Recipe},
+    {type = "unlock-recipe", recipe = Constants.Names.Proto.InterfaceChestLarge.Recipe},
+    {type = "unlock-recipe", recipe = Constants.Names.Proto.InterfaceChestWarehousing.Recipe}
 }
 researchSEStorageNetwork.unit = {
     count = 10,
@@ -131,7 +137,10 @@ researchSEHighCapacity.prerequisites = SEHighCapacity.prerequisites
 researchSEHighCapacity.effects = {
     {type = "unlock-recipe", recipe = Constants.Names.Proto.PatternBuffer.Recipe},
     {type = "unlock-recipe", recipe = Constants.Names.Proto.StorageChestMk2.Recipe},
-    {type = "unlock-recipe", recipe = Constants.Names.Proto.StorageChestMk1.Recipe .. "-upgrade"}
+    {type = "unlock-recipe", recipe = Constants.Names.Proto.StorageChestMk1.Recipe .. "-upgrade"},
+
+    {type = "unlock-recipe", recipe = Constants.Names.Proto.StorageChestLargeMk2.Recipe},
+    {type = "unlock-recipe", recipe = Constants.Names.Proto.StorageChestWarehousingMk2.Recipe},
 }
 researchSEHighCapacity.unit = {
     count = 10,
@@ -161,3 +170,25 @@ researchSEStorageLogistics.unit = {
 }
 
 data:extend{researchSEStorageLogistics}
+
+
+--------------- technology storage network (upgrade) ---------------
+local researchSEStorageNetworkUpgradeTier1 = {}
+
+researchSEStorageNetworkUpgradeTier1.type = "technology"
+researchSEStorageNetworkUpgradeTier1.name = Constants.Names.Tech.StorageNetwork .. "upgrade"
+researchSEStorageNetworkUpgradeTier1.icon = Constants.DataPaths.TechGFX .. "storage-network.png"
+researchSEStorageNetworkUpgradeTier1.icon_size = 128
+researchSEStorageNetworkUpgradeTier1.order = "a-a"
+researchSEStorageNetworkUpgradeTier1.prerequisites = SEStorageNetwork.prerequisites
+researchSEStorageNetworkUpgradeTier1.effects = { 
+    {type = "unlock-recipe", recipe = Constants.Names.Proto.StorageChestLargeMk1.Recipe},
+    {type = "unlock-recipe", recipe = Constants.Names.Proto.InterfaceChestLarge.Recipe}
+}
+researchSEStorageNetworkUpgradeTier1.unit = {
+    count = 10,
+    ingredients = SEStorageNetwork.ingredients,
+    time = 30
+}
+
+data:extend{researchSEStorageNetworkUpgradeTier1}

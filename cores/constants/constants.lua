@@ -1,35 +1,35 @@
 
 
-return function()
+
     -- What things are called
-    local Names = require("cores.constants.names")
+    RSENames = require("cores.constants.names")
 
     -- Where things are at
-    local Paths = require("cores.constants.paths")
+    RSEPaths = require("cores.constants.paths")
 
     -- Misc strings
-    local Strings = require("cores.constants.strings")
+    RSEStrings = require("cores.constants.strings")
 
     -- Kinds of nodes
-    local NodeTypes = require("cores.constants.node-types")
+    RSENodeTypes = require("cores.constants.node-types")
 
     -- Variables
-    local Variables = require("cores.constants.variables")
+    RSEVariables = require("cores.constants.variables")
 
     -- Settings
-    local Settings = require("cores.constants.settings")
+    RSESettings = require("cores.constants.settings")
 
-    Constants = {
-        Names = Names,
-        Strings = Strings,
-        DataPaths = Paths,
-        NodeTypes = NodeTypes,
-        Variables = Variables,
-        Settings = Settings
+
+    -- Entities
+    RSEEntities = require("cores.constants.entities")
+
+    local Constants = {
+        Names = RSENames,
+        Strings = RSEStrings,
+        DataPaths = RSEPaths,
+        NodeTypes = RSENodeTypes,
+        Variables = RSEVariables,
+        Settings = RSESettings,
+        Entities = RSEEntities
     }
-    return Constants
-
-
-    
-    
-end
+    return Constants 

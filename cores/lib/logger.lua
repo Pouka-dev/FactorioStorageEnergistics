@@ -4,8 +4,8 @@
 -- Define the logger function
 -- This will append the message to the log file
 -- Use: `serpent.block(table_name)` to log a table.
-return function()
-    local SELogger = {
+    local RSELogger = {
+        classname = "RSELogger",
         EnableTrace = false,
         EnableLogging = false
     }
@@ -20,7 +20,7 @@ return function()
     local appendLog = false
 
     local function log(level, message)
-        if SELogger.EnableLogging == false then
+        if RSELogger.EnableLogging == false then
             return
         end
 
@@ -30,25 +30,25 @@ return function()
         end
 
         -- Queue the message
-        queued[#queued + 1] = "[" .. tick .. "]" .. "[Storage Energistics]" .. "[" .. level .. "] " .. message .. "\n"
-        SELogger.Flush()
+        queued[#queued + 1] = "[" .. tick .. "]" .. "[RE:Storage Energistics]" .. "[" .. level .. "] " .. message .. "\n"
+        RSELogger.Flush()
     end
 
-    function SELogger.Trace(msg)
-        if SELogger.EnableTrace then
+    function RSELogger.Trace(msg)
+        if RSELogger.EnableTrace then
             log("TRCE", msg)
         end
     end
 
-    function SELogger.Info(msg)
+    function RSELogger.Info(msg)
         log("INFO", msg)
     end
 
-    function SELogger.Warning(msg)
+    function RSELogger.Warning(msg)
         log("WARN", msg)
     end
 
-    function SELogger.Error(msg)
+    function RSELogger.Error(msg)
         log("EROR", msg)
     end
 
@@ -56,8 +56,8 @@ return function()
     local TickCounter = FlushRate
 
     -- Flushes the log to disk ASAP
-    function SELogger.Flush()
-        if (#queued == 0 or SELogger.EnableLogging == false) then
+    function RSELogger.Flush()
+        if (#queued == 0 or RSELogger.EnableLogging == false) then
             return
         end
         if (game == nil) then
@@ -75,14 +75,14 @@ return function()
         appendLog = true
     end
 
-    function SELogger.Tick()
+    function RSELogger.Tick()
         if TickCounter > 0 then
             TickCounter = TickCounter - 1
             return
         end
         TickCounter = FlushRate
-        SELogger.Flush()
+        RSELogger.Flush()
     end
 
-    return SELogger
-end
+    return RSELogger
+

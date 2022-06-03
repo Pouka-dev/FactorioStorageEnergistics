@@ -14,7 +14,7 @@ GuiScroll = newclass(GuiElement,function(base,...)
   GuiElement.init(base,...)
   base.classname = "SEGuiScroll"
   base.options.type = "scroll-pane"
-  base.options.style = SE.Constants.Names.Styles.Scrolls.SEScrollDefault
+  base.options.style = RSE.Constants.Names.Styles.Scrolls.SEScrollDefault
 end)
 
 -------------------------------------------------------------------------------

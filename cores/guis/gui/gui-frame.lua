@@ -14,7 +14,7 @@ GuiFrame = newclass(GuiElement,function(base,...)
   GuiElement.init(base,...)
   base.classname = "SEGuiFrame"
   base.options.type = "frame"
-  base.options.style = SE.Constants.Names.Styles.Frames.SEFrameDefault
+  base.options.style = RSE.Constants.Names.Styles.Frames.SEFrameDefault
 end)
 
 -------------------------------------------------------------------------------
