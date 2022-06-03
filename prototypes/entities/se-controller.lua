@@ -41,7 +41,7 @@ seControllerR.ingredients = ingredients
 seControllerR.result = Constants.Names.Proto.Controller.Item
 
 
---- ENTITY --- {
+--- ENTITY --- 
 local seControllerE = {}
 
 seControllerE.type = "constant-combinator"

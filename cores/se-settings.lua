@@ -12,7 +12,7 @@ end)
     -- Called to load or reload the mod settings
     function SESettingsConstructor:LoadSettings(event)
         -- Main
-        local RodDifficulty = settings.startup["se-mod_difficulty"].value
+        local ModDifficulty = settings.startup["se-mod_difficulty"].value
         -- Global
         local NodeIdlePowerDrain = settings.global["se-power_drain_per_node_per_tick_in_watts"].value
         local PowerPerItem = settings.global["se-transfer_power_drain_per_item_in_watts"].value
@@ -33,7 +33,7 @@ end)
            end
         end
         -- Main
-        self.ModDifficulty = RodDifficulty
+        self.ModDifficulty = ModDifficulty
         -- Global
         self.NodeIdlePowerDrain = NodeIdlePowerDrain
         self.PowerPerItem = PowerPerItem

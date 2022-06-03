@@ -142,6 +142,7 @@ BaseNodeHandlerConstructor = newclass(Object,function(base,...)
                 -- Entity: The game entity this node represents.
                 Entity = entity
             }
+            , nil
     )
     end
     

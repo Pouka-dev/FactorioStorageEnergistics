@@ -10,6 +10,17 @@ end)
     return node.Entity.name == RSE.Constants.Names.Proto.RequesterChest.Entity
   end
 
+  -- DefaultValueForSEReadOnlyStorage( Event ) :: bool
+  -- Returns a value of se-read_only_storage settings by Player or default value of save
+  local function DefaultValueForSEReadOnlyStorage(event)
+    local isEnable = RSE.Settings.ReadOnlyStorageChest
+    if event ~= nil and event['player_index'] ~= nil then
+      local playerModSettings = Player.load(event).getModSettings()
+      isEnable = playerModSettings["se-read_only_storage"].value
+    end
+    return isEnable
+  end
+
   -- @See BaseNode:OnGetGuiHandler
   -- Show the gui
   function StorageNodeHandlerConstructor:OnGetGuiHandler(playerIndex)
@@ -111,8 +122,8 @@ end
   
 
   -- @See BaseNode.NewNode
-  function StorageNodeHandlerConstructor.NewNode(entity)
-    return StorageNodeHandlerConstructor.EnsureStructure(StorageNodeHandlerConstructor._super.NewNode(entity))
+  function StorageNodeHandlerConstructor.NewNode(entity,event)
+    return StorageNodeHandlerConstructor.EnsureStructure(StorageNodeHandlerConstructor._super.NewNode(entity), nil,event)
   end
 
   -- Returns if the node is read only or not
@@ -120,13 +131,13 @@ end
     return self.ReadOnlyMode
   end
 
-  -- @See BaseNode:EnsureStructure
-  function StorageNodeHandlerConstructor:EnsureStructure(isFirstTick)
+  -- @See BaseNode:EnsureStructure TODO SETTINGS
+  function StorageNodeHandlerConstructor:EnsureStructure(isFirstTick, event)
     StorageNodeHandlerConstructor._super.EnsureStructure(self)
     -- Name of the handler that implements functionality
     self.HandlerName = StorageNodeHandler.HandlerName
-    
-    if (not isFirstTick and (ForceReadOnly(self) or RSE.Settings.ReadOnlyStorageChest)) then
+
+    if (not isFirstTick and (ForceReadOnly(self) or DefaultValueForSEReadOnlyStorage(event))) then
       self.ReadOnlyMode = true
     end
 
