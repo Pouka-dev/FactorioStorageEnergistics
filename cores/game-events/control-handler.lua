@@ -7,10 +7,12 @@
     -- Called when the key bound to show network overview is pressed
     function ControlHandler.OnShowStorageNetworkGUI(event)
         local playerIndex = event.player_index
-        
+
         -- Toggle show/close
         if (RSE.GuiManager.IsGuiOpen(playerIndex, RSE.GuiManager.Guis.NetworkOverview)) then
             RSE.GuiManager.CloseGui(playerIndex)
+            RSE.GuiManager.CloseBuggyGui(event)
+            
         else
             RSE.GuiManager.ShowGui(event, RSE.GuiManager.Guis.NetworkOverview)
         end

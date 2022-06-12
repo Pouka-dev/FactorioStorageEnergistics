@@ -52,6 +52,9 @@ return function()
         -- Ensure the gui data object
         guiData = guiData or {}
 
+        -- Close buggy GUI
+        SEGuiManager.CloseBuggyGui(event)
+
         -- Open the GUI
         if (guiHandler.OnShow(guiData, event)) then
             -- Save the data
@@ -88,12 +91,12 @@ return function()
     -- Tick() :: void
     -- Called every game tick
     -- If there are any GUIs open, and those GUIs accept ticks, they will be ticked.
-    function SEGuiManager.Tick(tick)
+    function SEGuiManager.Tick(event)
         -- Tick guis
         for player_index, openedGui in pairs(OpenedGuis) do
             if (openedGui.GuiHandler.NeedsTicks) then
                 -- Tick the gui
-                if (not openedGui.GuiHandler.OnTick(openedGui.GuiData, player_index, tick)) then
+                if (not openedGui.GuiHandler.OnTick(openedGui.GuiData, player_index, event.tick)) then
                     -- Close the gui
                     -- (As we are not adding, so this should be safe)
                     SEGuiManager.CloseGui(player_index)
@@ -219,6 +222,18 @@ return function()
             guiHandler.OnClose(nil, event.player_index)
         end
     end
+
+
+    function SEGuiManager.CloseBuggyGui(event)
+        Player.load(event)
+        local lua_gui_element = Player.getGui("left")
+            for _,children_name in pairs(lua_gui_element.children_names) do
+                if string.find(children_name,RSE.Constants.Names.Gui.Interface.Name) ~= nil or string.find(children_name,RSE.Constants.Names.Gui.StorageChest.Name) ~= nil then
+                    lua_gui_element[children_name].destroy()
+                end
+            end
+    end
+    
 
     -- RegisterWithGame() :: void
     -- Called to register the handler events

@@ -168,8 +168,6 @@ function EntityHandlers.OnPlayerConfiguredBlueprint(event)
     local player = Player.load(event).get()
 end
 
-
-
 function EntityHandlers.EntityToBlueprintTags(copyEntity, fromTable)
     
     local tags = nil
@@ -180,10 +178,6 @@ function EntityHandlers.EntityToBlueprintTags(copyEntity, fromTable)
     return tags
 end
 
-
-
-
-
 -- RegisterWithGame() :: void
 -- Registers event listeners with the game.
 function EntityHandlers.RegisterWithGame()
@@ -191,9 +185,6 @@ function EntityHandlers.RegisterWithGame()
     script.on_event(defines.events.on_pre_entity_settings_pasted, EntityHandlers.OnPreEntitySettingsPasted)
     script.on_event(defines.events.on_player_setup_blueprint, EntityHandlers.OnPlayerSetupBlueprint)
     script.on_event(defines.events.on_player_configured_blueprint, EntityHandlers.OnPlayerConfiguredBlueprint)
-    
-    
-    
     
     -- Creation
     script.on_event(defines.events.on_built_entity, EntityHandlers.Creation.OnBuiltByPlayer)
