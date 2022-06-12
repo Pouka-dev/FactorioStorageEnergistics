@@ -16,7 +16,6 @@ return function()
         GameEventManager.Control.RegisterWithGame()
         RSE.GuiManager.RegisterWithGame()
         script.on_event(defines.events.on_tick, GameEventManager.OnFirstTick)
-        script.on_event(defines.events.on_player_joined_game, RSE.GuiManager.OnPlayerJoinedGame)
         script.on_event(defines.events.on_runtime_mod_setting_changed, GameEventManager.OnRuntimeModSettingChanged)
     end
 
@@ -63,20 +62,9 @@ return function()
     -- Called every game tick.
     function GameEventManager.OnTick(event)
         RSE.NetworksManager.Tick(event)
-        RSE.GuiManager.Tick(event.tick)
+        RSE.GuiManager.Tick(event)
         RSE.Logger.Tick()
     end
-
-
-    
-
-    -- -- OnPlayerJoined( Event ) :: void
-    -- -- Called when a player joins the game
-    -- -- Event fields:
-    -- -- - player_index :: uint
-    -- function GameEventManager.OnPlayerJoined(event)
-    --   RSE.GuiManager.OnPlayerJoinedGame(event)
-    -- end
 
     return GameEventManager
 end

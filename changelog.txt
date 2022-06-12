@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.1
+Date: 12. 06. 2022
+  Bugfixes:
+    - Clicking 0 Threshold Item link: https://github.com/Pouka-dev/re_storage_energistics/issues/7.
+  Changes:
+    - I found one other bug, when in auto save action we have gui of this mod and we closing the game after. We have a gui buggy. Please you can open other interface or chest of this mod for close buggy GUI or presse 'N'
+---------------------------------------------------------------------------------------------------
 Version: 1.2.0
 Date: 20. 09. 2021
   Bugfixes:

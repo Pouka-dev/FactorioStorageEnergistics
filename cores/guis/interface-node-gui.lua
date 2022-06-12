@@ -23,7 +23,11 @@ return function(BaseGUI)
     SliderSteps[#SliderSteps + 1] = 10000
     SliderSteps[#SliderSteps + 1] = 20000
     
-    
+    local function NotNilAndNotEmptyStringGuard(guiData)
+        if(guiData.AmountMinForCall.text == nil or guiData.AmountMinForCall.text == "") then
+            guiData.AmountMinForCall.text = "0"
+        end
+    end
     
     -- Sets the amount for the currently selected item
     local function SetFilterAmount(guiData, amount)
@@ -81,10 +85,10 @@ return function(BaseGUI)
         guiData.AmountMinForCall.enabled = not noSelection
         -- Is there no selection?
         if (noSelection) then
-            text = "1"
+            text = "0"
         end
         
-        guiData.AmountMinForCall.text = text or ""
+        guiData.AmountMinForCall.text = text or "0"
         guiData.PreviousAmountMinForCall = guiData.AmountMinForCall.text
     
     end
@@ -102,11 +106,11 @@ return function(BaseGUI)
             text = "1"
         end
         
-        guiData.AmountTextfield.text = text or ""
+        guiData.AmountTextfield.text = text or "1"
         guiData.PreviousAmountText = guiData.AmountTextfield.text
         
-        local isNotNull = (guiData.AmountMinForCall ~= nil and text ~= nil)
-        if (isNotNull and tonumber(guiData.AmountMinForCall.text) > tonumber(text)) then
+        local isNotNull = (guiData.AmountMinForCall ~= nil and guiData.AmountMinForCall.text ~= nil and text ~= nil)
+        if (isNotNull and NotNilAndNotEmptyStringGuard(guiData) and tonumber(guiData.AmountMinForCall.text) > tonumber(text)) then
             SetAmountMinForCallText(guiData, text)
             SetFilterAmountMinForCall(guiData, tonumber(text))
         else
@@ -114,9 +118,7 @@ return function(BaseGUI)
             SetAmountMinForCallText(guiData, tostring(amount))
             SetFilterAmountMinForCall(guiData, amount)
         end
-    end
-    
-    
+    end   
     
     -- Sets which slot is selected
     local function SetSelectedIndex(guiData, index)
@@ -159,8 +161,8 @@ return function(BaseGUI)
         SetSliderValue(guiData, filterAmount)
         
         -- Set amount
-        SetAmountText(guiData, (filterAmount > 0 and tostring(filterAmount)) or "")
-        SetAmountMinForCallText(guiData, (filterAmountMinForCall > 0 and tostring(filterAmountMinForCall)) or "")
+        SetAmountText(guiData, (filterAmount >= 0 and tostring(filterAmount)) or "1")
+        SetAmountMinForCallText(guiData, (filterAmountMinForCall >= 0 and tostring(filterAmountMinForCall)) or "0")
     end
     
     -- Sets the filter and slot
@@ -218,7 +220,7 @@ return function(BaseGUI)
         self.PreviousAmountText = "1"
         self.AmountSlider = nil
         self.AmountTextfield = nil
-        self.PreviousAmountMinForCall = "1"
+        self.PreviousAmountMinForCall = "0"
         self.AmountMinForCall = nil
         
         
@@ -276,7 +278,7 @@ return function(BaseGUI)
         local amountMinForCallContainer = GuiElement.add(body, GuiFlowH("amount-min-for-call-container"))
         
         GuiElement.add(amountMinForCallContainer, GuiLabel("rse-item-label-interface"):style(RSE.Constants.Names.Styles.Labels.SEItemTableItemLabel):caption(RSE.Constants.Strings.Local.InterfaceAmountMinForCall))
-        self.AmountMinForCall = GuiElement.add(amountMinForCallContainer, GuiTextField(inputAmountMinForCallTransfert):tooltip(RSE.Constants.Strings.Local.InterfaceAmountMinForCallDescription):style(RSE.Constants.Names.Styles.Textfields.SELogisticsTextfield):text("1"))
+        self.AmountMinForCall = GuiElement.add(amountMinForCallContainer, GuiTextField(inputAmountMinForCallTransfert):tooltip(RSE.Constants.Strings.Local.InterfaceAmountMinForCallDescription):style(RSE.Constants.Names.Styles.Textfields.SELogisticsTextfield):text("0"))
         self.AmountMinForCall.enabled = false
         return true
     end
@@ -349,7 +351,7 @@ return function(BaseGUI)
             -- Reset
             txtBox.text = "1"
             self.PreviousAmountText = "1"
-            self.PreviousAmountMinForCall = "1"
+            self.PreviousAmountMinForCall = "0"
             return
         end
         
