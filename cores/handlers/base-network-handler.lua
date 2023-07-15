@@ -23,7 +23,8 @@ function BaseNetworkHandlerConstructor.NewNetwork(networkID, wireType)
         TickingNodes = {},
         StorageCatalog = nil,
         HasPower = false,
-        LastStorageTick = 0
+        LastStorageTick = 0,
+        CurrentIndex = 0
     }
     return network
 end
@@ -58,7 +59,15 @@ function BaseNetworkHandlerConstructor:AddNode(node, fireNodeEvents)
     -- Does the node tick?
     if (nodeHandler.NeedsTicks == true) then
         ---RSE.Logger.Trace("Network: Added ticking node")
-        self.TickingNodes[node] = nodeHandler
+        --self.TickingNodes[node] = nodeHandler
+
+        local ix = #self.TickingNodes + 1
+        node.id = ix
+
+        self.TickingNodes[ix] = {
+            n = node,
+            h = nodeHandler
+        }
     end
     
     -- Set the nodes network ID
@@ -100,7 +109,8 @@ function BaseNetworkHandlerConstructor:RemoveNode(node, fireNodeEvents)
     
     -- Does the node tick?
     if (nodeHandler.NeedsTicks == true) then
-        self.TickingNodes[node] = nil
+        --self.TickingNodes[node] = nil
+        self.TickingNodes[node.id] = nil
     end
     
     -- Remove from node
@@ -133,14 +143,31 @@ function BaseNetworkHandlerConstructor:NetworkTick()
         ---RSE.Logger.Trace("Missing controller(s) on network " .. tostring(self.NetworkID))
         return
     end
-    
+
     -- Tick nodes
-    for node, handler in pairs(self.TickingNodes) do
-        if (handler.Valid(node)) then
-            ---RSE.Logger.Trace("Ticking Node")
-            handler.OnNetworkTick(node, self)
+    -- for node, handler in pairs(self.TickingNodes) do
+    --     if (handler.Valid(node)) then
+    --         ---RSE.Logger.Trace("Ticking Node")
+    --         handler.OnNetworkTick(node, self)
+    --     end
+    -- end
+
+    --RSE.Logger.Info(self.CurrentIndex .. " to " .. self.CurrentIndex + 10)
+    self.CurrentIndex = self.CurrentIndex + 1
+    for i = self.CurrentIndex, self.CurrentIndex + 10 do
+        if (i > #self.TickingNodes) then
+            self.CurrentIndex = 0
+            break
         end
+
+        local obj = self.TickingNodes[i]
+        if (obj.h.Valid(obj.n)) then
+            obj.h.OnNetworkTick(obj.n, self)
+        end
+
+        self.CurrentIndex = i
     end
+
 end
 
 -- CanExtractPower( Network, PowerRequest ) :: bool

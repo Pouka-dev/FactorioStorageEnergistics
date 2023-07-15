@@ -217,7 +217,7 @@ function NetworksManagerObjectConstructor.Tick(event)
         end
     end -- End network tick
 
-    if tick % RSE.Settings.TickRate == 0 then
+    --if tick % RSE.Settings.TickRate == 0 then
         -- Validate and tick all networks
         for circuitNetworkID, network in pairs(Networks) do
             if (RSE.NetworkHandler.Empty(network)) then
@@ -228,7 +228,7 @@ function NetworksManagerObjectConstructor.Tick(event)
                 RSE.NetworkHandler.NetworkTick(network)
             end
         end
-    end
+    --end
 end
 
 -- Called during the mods OnInit phase
