@@ -217,18 +217,16 @@ function NetworksManagerObjectConstructor.Tick(event)
         end
     end -- End network tick
 
-    --if tick % RSE.Settings.TickRate == 0 then
-        -- Validate and tick all networks
-        for circuitNetworkID, network in pairs(Networks) do
-            if (RSE.NetworkHandler.Empty(network)) then
-                ---RSE.Logger.Trace("Removing empty network " .. tostring(circuitNetworkID))
-                Networks[circuitNetworkID] = nil
-            else
-                ---RSE.Logger.Trace("Ticking Network " .. tostring(circuitNetworkID))
-                RSE.NetworkHandler.NetworkTick(network)
-            end
+    -- Validate and tick all networks
+    for circuitNetworkID, network in pairs(Networks) do
+        if (RSE.NetworkHandler.Empty(network)) then
+            ---RSE.Logger.Trace("Removing empty network " .. tostring(circuitNetworkID))
+            Networks[circuitNetworkID] = nil
+        else
+            ---RSE.Logger.Trace("Ticking Network " .. tostring(circuitNetworkID))
+            RSE.NetworkHandler.NetworkTick(network)
         end
-    --end
+    end
 end
 
 -- Called during the mods OnInit phase

@@ -39,15 +39,6 @@ Settings = {
             minimum_value = 1,
             order = "a-c"
         },
-        game_ticks_per_network_tick = {
-            type = "int-setting",
-            setting_type = "runtime-global",
-            localised_name = {"se_global_settings.se-game-ticks-per-network-tick"},
-            localised_description = {"se_global_settings_descriptions.se-game-ticks-per-network-tick"},
-            default_value = 42,
-            minimum_value = 25,
-            order = "a-d"
-        },
         -- Player
         read_only_storage = {
             type = "bool-setting",

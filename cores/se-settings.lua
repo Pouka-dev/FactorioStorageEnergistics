@@ -3,7 +3,6 @@ SESettingsConstructor = newclass(Object, function(base, ...)
     base.NodeIdlePowerDrain = 5
     base.PowerPerItem = 1000
     base.PowerPerChunk = 50
-    base.TickRate = 42
     base.ReadOnlyStorageChest = true
     base.ModDifficulty = "Normal"
 end)
@@ -17,7 +16,6 @@ end)
         local NodeIdlePowerDrain = settings.global["se-power_drain_per_node_per_tick_in_watts"].value
         local PowerPerItem = settings.global["se-transfer_power_drain_per_item_in_watts"].value
         local PowerPerChunk = settings.global["se-transfer_power_drain_per_chunk_in_watts"].value
-        local TickRate = settings.global["se-game_ticks_per_network_tick"].value
         -- Player
         local ReadOnlyStorageChest = settings.player["se-read_only_storage"].value
 
@@ -38,7 +36,6 @@ end)
         self.NodeIdlePowerDrain = NodeIdlePowerDrain
         self.PowerPerItem = PowerPerItem
         self.PowerPerChunk = PowerPerChunk
-        self.TickRate = TickRate
         -- Player
         self.ReadOnlyStorageChest = ReadOnlyStorageChest
     end
