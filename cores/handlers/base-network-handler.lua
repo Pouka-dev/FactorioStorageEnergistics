@@ -161,7 +161,7 @@ function BaseNetworkHandlerConstructor:NetworkTick()
         end
 
         local obj = self.TickingNodes[i]
-        if (obj.h.Valid(obj.n)) then
+        if obj ~= nil and obj.h.Valid(obj.n) then
             obj.h.OnNetworkTick(obj.n, self)
         end
 
