@@ -2,8 +2,8 @@ NetworksManagerObjectConstructor = newclass(Object, function(base, ...)
     Object.init(base, ...)
 end)
 
-local NetworkTickRate = 30
-local LastNetworkTick = 0
+local LastNodePos = 0
+local LastNetworkPos = 0
 
 ---All Nodes
 ---Sequential array
@@ -12,6 +12,28 @@ local Nodes = nil
 --
 -- -- Map( CircuitNetworkID -> Network )
 local Networks = {}
+local NetworkIDs = {}
+
+-- Adds a network ID to the store
+local function AddNetworkID(id)
+    for i = 1, #NetworkIDs do
+        if (NetworkIDs[i] == id) then
+            return
+        end
+    end
+
+    table.insert(NetworkIDs, id)
+end
+
+-- Removes a network ID from the store
+local function RemoveNetworkID(id)
+    for i = 1, #NetworkIDs do
+        if (NetworkIDs[i] == id) then
+            table.remove(NetworkIDs, i)
+            return
+        end
+    end
+end
 
 -- Returns the index of the given node
 local function GetNodeIndex(node)
@@ -36,6 +58,7 @@ local function GetOrCreateNetworkHandlerForCircuitNetwork(node, wireType)
     if (network == nil) then
         network = RSE.NetworkHandler.NewNetwork(netID, wireType)
         Networks[netID] = network
+        AddNetworkID(netID)
     ---RSE.Logger.Trace("Creating new network for " .. tostring(circuitNetwork.network_id))
     end
     
@@ -96,11 +119,7 @@ end
 
 -- Returns an array containing all network ids
 function NetworksManagerObjectConstructor.GetNetworkIDs()
-    local ids = {}
-    for circuitID, _ in pairs(Networks) do
-        ids[#ids + 1] = circuitID
-    end
-    return ids
+    return NetworkIDs
 end
 
 -- Returns the network with the specified ID
@@ -167,41 +186,55 @@ function NetworksManagerObjectConstructor.Tick(event)
             RSE.NetworkHandler.OnTick(network, event.tick)
         end
     end
+    
+    -- Check node connections
+    if tick % 10 == 0 then
+        --RSE.Logger.Info(LastNetworkTick .. " to " .. LastNetworkTick + 10)
+        LastNodePos = LastNodePos + 1
+        for idx = LastNodePos, LastNodePos + 10 do
+            if (idx > #Nodes) then
+                LastNodePos = 0
+                break
+            end
 
-    -- Network tick?
-    --if (math.fmod(event.tick, RSE.Settings.TickRate) == 0) then
-    if tick % 100 == 0 then
-        -- Validate all nodes and connections
-        local node = nil
-        local idx = 1
-        while (idx <= #Nodes) do
-            node = Nodes[idx]
+            local node = Nodes[idx]
             -- Is the node still valid?
             if (RSE.NodeHandlersRegistry:GetNodeHandler(node).Valid(node)) then
                 -- Validate connections
                 ValidateConnection(node, defines.wire_type.green)
                 ValidateConnection(node, defines.wire_type.red)
-                
-                -- Increment loop variable
-                idx = idx + 1
             else
                 -- Node is no longer valid, remove it, and do not increment loop varaiable
                 ---RSE.Logger.Trace("Networks: Removing invalid node")
-                ---RSE.Logger.Trace(serpent.block(node))
                 RemoveNodeByIndex(idx)
             end
+
+            LastNodePos = idx
         end
-    end -- End network tick
+    end
 
     -- Validate and tick all networks
-    for circuitNetworkID, network in pairs(Networks) do
+    --RSE.Logger.Info(LastNetworkPos .. " to " .. LastNetworkPos + 10)
+    LastNetworkPos = LastNetworkPos + 1
+    for i = LastNetworkPos, LastNetworkPos + 10 do
+        if (i > #NetworkIDs) then
+            LastNetworkPos = 0
+            break
+        end
+
+        local network = Networks[NetworkIDs[i]]
+        local circuitNetworkID = NetworkIDs[i]
+
         if (RSE.NetworkHandler.Empty(network)) then
             ---RSE.Logger.Trace("Removing empty network " .. tostring(circuitNetworkID))
             Networks[circuitNetworkID] = nil
+            RemoveNetworkID(circuitNetworkID)
         else
             ---RSE.Logger.Trace("Ticking Network " .. tostring(circuitNetworkID))
             RSE.NetworkHandler.NetworkTick(network)
         end
+
+        LastNetworkPos = i
     end
 end
 

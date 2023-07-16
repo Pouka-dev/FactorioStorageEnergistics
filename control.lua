@@ -46,8 +46,8 @@ end
 -- Create the logger
 RSE.Logger = require ("cores.lib.logger")
 -- Log trace messages
-RSE.Logger.EnableTrace = false
-RSE.Logger.EnableLogging = false
+RSE.Logger.EnableTrace = true
+RSE.Logger.EnableLogging = true
 
 
 --- Create constants
