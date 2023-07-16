@@ -12,9 +12,6 @@ local Nodes = nil
 --
 -- -- Map( CircuitNetworkID -> Network )
 local Networks = {}
---
--- -- Map ( Node -> Handler )
-local TickingNodes = {}
 
 -- Returns the index of the given node
 local function GetNodeIndex(node)
@@ -95,12 +92,6 @@ local function RemoveNodeByIndex(idx)
     
     -- Remove from nodes
     table.remove(Nodes, idx)
-    
-    -- Does the node tick?
-    if (nodeHandler.NeedsTicks) then
-        -- Remove from ticking
-        TickingNodes[node] = nil
-    end
 end
 
 -- Returns an array containing all network ids
@@ -127,13 +118,6 @@ function NetworksManagerObjectConstructor.AddNode(node)
     if (GetNodeIndex(node) == 0) then
         -- Add to nodes
         Nodes[#Nodes + 1] = node
-        
-        -- Does the node tick?
-        local handler = RSE.NodeHandlersRegistry:GetNodeHandler(node)
-        if (handler.NeedsTicks) then
-            -- Add to ticking
-            TickingNodes[node] = handler
-        end
     
     ---RSE.Logger.Trace("Networks: Added node")
     end
@@ -183,15 +167,7 @@ function NetworksManagerObjectConstructor.Tick(event)
             RSE.NetworkHandler.OnTick(network, event.tick)
         end
     end
-    
-    -- Tick nodes
-    for node, handler in next, TickingNodes do
-        if (handler.Valid(node)) then
-            handler.OnTick(node, event.tick)
-        end
-    end
-    
-    
+
     -- Network tick?
     --if (math.fmod(event.tick, RSE.Settings.TickRate) == 0) then
     if tick % 100 == 0 then
@@ -269,12 +245,6 @@ function NetworksManagerObjectConstructor.FirstTick()
         if (network ~= nil) then
             -- Add the node
             RSE.NetworkHandler.AddNode(network, node, false)
-        end
-        
-        -- Does the node tick?
-        if (handler.NeedsTicks) then
-            -- Add to ticking
-            TickingNodes[node] = handler
         end
     end
 end
