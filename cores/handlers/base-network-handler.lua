@@ -144,17 +144,9 @@ function BaseNetworkHandlerConstructor:NetworkTick()
         return
     end
 
-    -- Tick nodes
-    -- for node, handler in pairs(self.TickingNodes) do
-    --     if (handler.Valid(node)) then
-    --         ---RSE.Logger.Trace("Ticking Node")
-    --         handler.OnNetworkTick(node, self)
-    --     end
-    -- end
-
     --RSE.Logger.Info(self.CurrentIndex .. " to " .. self.CurrentIndex + 10)
     self.CurrentIndex = self.CurrentIndex + 1
-    for i = self.CurrentIndex, self.CurrentIndex + 10 do
+    for i = self.CurrentIndex, self.CurrentIndex + RSE.Settings.EntitiesPerTickPerNetwork do
         if (i > #self.TickingNodes) then
             self.CurrentIndex = 0
             break

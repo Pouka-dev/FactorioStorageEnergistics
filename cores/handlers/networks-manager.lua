@@ -216,7 +216,7 @@ function NetworksManagerObjectConstructor.Tick(event)
     -- Validate and tick all networks
     --RSE.Logger.Info(LastNetworkPos .. " to " .. LastNetworkPos + 10)
     LastNetworkPos = LastNetworkPos + 1
-    for i = LastNetworkPos, LastNetworkPos + 10 do
+    for i = LastNetworkPos, LastNetworkPos + RSE.Settings.NetworksPerTick do
         if (i > #NetworkIDs) then
             LastNetworkPos = 0
             break
