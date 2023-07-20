@@ -127,16 +127,17 @@ end
 function BaseNetworkHandlerConstructor:OnTick(tick)
     -- Draw idle power
     self.HasPower = (self.PowerDrainNodeCount == 0) or BaseNetworkHandlerConstructor.ExtractPower(self, self.PowerDrainNodeCount * RSE.Settings.NodeIdlePowerDrain)
+    --RSE.Logger.Info(tostring(self.HasPower) .. " " .. self.NetworkID)
 end
 
 -- NetworkTick( Self ) :: void
 -- Called when the network ticks
-function BaseNetworkHandlerConstructor:NetworkTick()
-    if (not self.HasPower) then
-        -- Not enough power to run network
-        ---RSE.Logger.Trace("Not enough power for network " .. tostring(self.NetworkID))
-        return
-    end
+function BaseNetworkHandlerConstructor:NetworkTick(event)
+    -- if (not self.HasPower) then
+    --     -- Not enough power to run network
+    --         RSE.Logger.Trace("Not enough power for network " .. tostring(self.NetworkID))
+    --     return
+    -- end
     
     -- Network requires at least 1 controller to tick devices
     if (next(self.ControllerNodes) == nil) then
@@ -154,7 +155,11 @@ function BaseNetworkHandlerConstructor:NetworkTick()
 
         local obj = self.TickingNodes[i]
         if obj ~= nil and obj.h.Valid(obj.n) then
-            obj.h.OnNetworkTick(obj.n, self)
+            obj.h.OnTick(obj.n, event.tick) -- ticks power nodes
+
+            if self.HasPower then
+                obj.h.OnNetworkTick(obj.n, self)
+            end
         end
 
         self.CurrentIndex = i
