@@ -231,7 +231,7 @@ function NetworksManagerObjectConstructor.Tick(event)
             RemoveNetworkID(circuitNetworkID)
         else
             ---RSE.Logger.Trace("Ticking Network " .. tostring(circuitNetworkID))
-            RSE.NetworkHandler.NetworkTick(network)
+            RSE.NetworkHandler.NetworkTick(network, event)
         end
 
         LastNetworkPos = i
