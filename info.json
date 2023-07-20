@@ -1,11 +1,11 @@
 {
-  "name": "re_storage_energistics",
-  "version": "1.2.1",
-  "title": "RE:Storage Energistics",
-  "author": "Pouka",
-  "contact": "Pouka",
+  "name": "dark_storage_energistics",
+  "version": "1.2.2",
+  "title": "DARK:Storage Energistics",
+  "author": "darkrising",
+  "contact": "darkrising",
   "homepage": "",
   "factorio_version": "1.1",
-  "dependencies": ["base >= 1.1.59"],
+  "dependencies": ["base >= 1.1.59", "!re_storage_energistics"],
   "description": "This mod makes it possible to transit objects via the logistics network, against energy."
 }
