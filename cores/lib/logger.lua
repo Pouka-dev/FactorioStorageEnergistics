@@ -30,7 +30,7 @@
         end
 
         -- Queue the message
-        queued[#queued + 1] = "[" .. tick .. "]" .. "[RE:Storage Energistics]" .. "[" .. level .. "] " .. message .. "\n"
+        queued[#queued + 1] = "[" .. tick .. "]" .. "[DARK:Storage Energistics]" .. "[" .. level .. "] " .. message .. "\n"
         RSELogger.Flush()
     end
 
