@@ -20,9 +20,19 @@ local entities = {
 --global.Nodes = {}
 -- local initial = #global.Nodes
 
--- local Logger = require ("cores.lib.logger")
--- Logger.EnableTrace = true
--- Logger.EnableLogging = true
+local Logger = require ("cores.lib.logger")
+Logger.EnableTrace = true
+Logger.EnableLogging = true
+
+-- local function a(t, d)
+--     for i,v in pairs(t) do
+--         Logger.Info(string.rep("-", d) .. " " .. tostring(i) .. " -> " .. tostring(v))
+--         if i ~= "__index" and i ~= "package" and i ~= "_G" and type(v) == "table" then
+--             a(v, d + 1)
+--         end
+--     end
+-- end
+-- a(_G, 1)
 
 for _, surface in pairs(game.surfaces) do
     for i = 1, #entities do
@@ -39,10 +49,21 @@ for _, surface in pairs(game.surfaces) do
     end
 end
 
--- Logger.Info("Initial: " .. initial)
--- Logger.Info("Finished: " .. #global.Nodes)
+local total = 0
+local unable_to_set = 0
+for _, node in pairs(RSE.DataStore.Nodes) do
+    if node.HandlerName == "InterfaceNodeHandler" then
+        local inv = node.Entity.get_inventory(defines.inventory.chest)
+        total = total + 1
+        if not inv.is_empty() then
+            for item, count in pairs(inv.get_contents()) do
+                table.insert(node.RequestFilters, {Item = item, Amount = 200, AmountMinForCall = 50})
+            end
+        else
+            unable_to_set = unable_to_set + 1
+        end
+    end
+end
 
---RSE.DataStore = SEStoreConstructor("RSEDataStore")
---RSE.DataStore.Nodes = global.Nodes
-
---RSE.NetworksManager.FirstTick()
+game.print("DARK: Storage Energistics migration finished: " .. unable_to_set .. "/" .. total .. " filters were unable to be semi-recovered!", {r = 255, g = 255})
+game.print("Please Note: I can only recover filters from non-empty chests.", {r = 255, g = 255})
