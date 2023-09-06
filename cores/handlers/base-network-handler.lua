@@ -23,7 +23,8 @@ function BaseNetworkHandlerConstructor.NewNetwork(networkID, wireType)
         TickingNodes = {},
         StorageCatalog = nil,
         HasPower = false,
-        LastStorageTick = 0
+        LastStorageTick = 0,
+        CurrentIndex = 0
     }
     return network
 end
@@ -58,7 +59,15 @@ function BaseNetworkHandlerConstructor:AddNode(node, fireNodeEvents)
     -- Does the node tick?
     if (nodeHandler.NeedsTicks == true) then
         ---RSE.Logger.Trace("Network: Added ticking node")
-        self.TickingNodes[node] = nodeHandler
+        --self.TickingNodes[node] = nodeHandler
+
+        local ix = #self.TickingNodes + 1
+        node.id = ix
+
+        self.TickingNodes[ix] = {
+            n = node,
+            h = nodeHandler
+        }
     end
     
     -- Set the nodes network ID
@@ -100,7 +109,8 @@ function BaseNetworkHandlerConstructor:RemoveNode(node, fireNodeEvents)
     
     -- Does the node tick?
     if (nodeHandler.NeedsTicks == true) then
-        self.TickingNodes[node] = nil
+        --self.TickingNodes[node] = nil
+        self.TickingNodes[node.id] = nil
     end
     
     -- Remove from node
@@ -117,30 +127,44 @@ end
 function BaseNetworkHandlerConstructor:OnTick(tick)
     -- Draw idle power
     self.HasPower = (self.PowerDrainNodeCount == 0) or BaseNetworkHandlerConstructor.ExtractPower(self, self.PowerDrainNodeCount * RSE.Settings.NodeIdlePowerDrain)
+    --RSE.Logger.Info(tostring(self.HasPower) .. " " .. self.NetworkID)
 end
 
 -- NetworkTick( Self ) :: void
 -- Called when the network ticks
-function BaseNetworkHandlerConstructor:NetworkTick()
-    if (not self.HasPower) then
-        -- Not enough power to run network
-        ---RSE.Logger.Trace("Not enough power for network " .. tostring(self.NetworkID))
-        return
-    end
+function BaseNetworkHandlerConstructor:NetworkTick(event)
+    -- if (not self.HasPower) then
+    --     -- Not enough power to run network
+    --         RSE.Logger.Trace("Not enough power for network " .. tostring(self.NetworkID))
+    --     return
+    -- end
     
     -- Network requires at least 1 controller to tick devices
     if (next(self.ControllerNodes) == nil) then
         ---RSE.Logger.Trace("Missing controller(s) on network " .. tostring(self.NetworkID))
         return
     end
-    
-    -- Tick nodes
-    for node, handler in pairs(self.TickingNodes) do
-        if (handler.Valid(node)) then
-            ---RSE.Logger.Trace("Ticking Node")
-            handler.OnNetworkTick(node, self)
+
+    --RSE.Logger.Info(self.CurrentIndex .. " to " .. self.CurrentIndex + 10)
+    self.CurrentIndex = self.CurrentIndex + 1
+    for i = self.CurrentIndex, self.CurrentIndex + RSE.Settings.EntitiesPerTickPerNetwork do
+        if (i > #self.TickingNodes) then
+            self.CurrentIndex = 0
+            break
         end
+
+        local obj = self.TickingNodes[i]
+        if obj ~= nil and obj.h.Valid(obj.n) then
+            obj.h.OnTick(obj.n, event.tick) -- ticks power nodes
+
+            if self.HasPower then
+                obj.h.OnNetworkTick(obj.n, self)
+            end
+        end
+
+        self.CurrentIndex = i
     end
+
 end
 
 -- CanExtractPower( Network, PowerRequest ) :: bool

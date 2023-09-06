@@ -39,14 +39,23 @@ Settings = {
             minimum_value = 1,
             order = "a-c"
         },
-        game_ticks_per_network_tick = {
+        entities_per_tick_per_network = {
             type = "int-setting",
             setting_type = "runtime-global",
-            localised_name = {"se_global_settings.se-game-ticks-per-network-tick"},
-            localised_description = {"se_global_settings_descriptions.se-game-ticks-per-network-tick"},
-            default_value = 42,
-            minimum_value = 25,
-            order = "a-d"
+            localised_name = {"se_global_settings.se-entities-per-tick-per-network"},
+            localised_description = {"se_global_settings_descriptions.se-entities-per-tick-per-network"},
+            default_value = 5,
+            minimum_value = 1,
+            order = "a-e"
+        },
+        networks_per_tick = {
+            type = "int-setting",
+            setting_type = "runtime-global",
+            localised_name = {"se_global_settings.se-networks-per-tick"},
+            localised_description = {"se_global_settings_descriptions.se-networks-per-tick"},
+            default_value = 10,
+            minimum_value = 1,
+            order = "a-e"
         },
         -- Player
         read_only_storage = {

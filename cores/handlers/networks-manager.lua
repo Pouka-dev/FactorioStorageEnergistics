@@ -2,8 +2,8 @@ NetworksManagerObjectConstructor = newclass(Object, function(base, ...)
     Object.init(base, ...)
 end)
 
-local NetworkTickRate = 30
-local LastNetworkTick = 0
+local LastNodePos = 0
+local LastNetworkPos = 0
 
 ---All Nodes
 ---Sequential array
@@ -12,9 +12,28 @@ local Nodes = nil
 --
 -- -- Map( CircuitNetworkID -> Network )
 local Networks = {}
---
--- -- Map ( Node -> Handler )
-local TickingNodes = {}
+local NetworkIDs = {}
+
+-- Adds a network ID to the store
+local function AddNetworkID(id)
+    for i = 1, #NetworkIDs do
+        if (NetworkIDs[i] == id) then
+            return
+        end
+    end
+
+    table.insert(NetworkIDs, id)
+end
+
+-- Removes a network ID from the store
+local function RemoveNetworkID(id)
+    for i = 1, #NetworkIDs do
+        if (NetworkIDs[i] == id) then
+            table.remove(NetworkIDs, i)
+            return
+        end
+    end
+end
 
 -- Returns the index of the given node
 local function GetNodeIndex(node)
@@ -39,6 +58,7 @@ local function GetOrCreateNetworkHandlerForCircuitNetwork(node, wireType)
     if (network == nil) then
         network = RSE.NetworkHandler.NewNetwork(netID, wireType)
         Networks[netID] = network
+        AddNetworkID(netID)
     ---RSE.Logger.Trace("Creating new network for " .. tostring(circuitNetwork.network_id))
     end
     
@@ -95,21 +115,11 @@ local function RemoveNodeByIndex(idx)
     
     -- Remove from nodes
     table.remove(Nodes, idx)
-    
-    -- Does the node tick?
-    if (nodeHandler.NeedsTicks) then
-        -- Remove from ticking
-        TickingNodes[node] = nil
-    end
 end
 
 -- Returns an array containing all network ids
 function NetworksManagerObjectConstructor.GetNetworkIDs()
-    local ids = {}
-    for circuitID, _ in pairs(Networks) do
-        ids[#ids + 1] = circuitID
-    end
-    return ids
+    return NetworkIDs
 end
 
 -- Returns the network with the specified ID
@@ -127,13 +137,6 @@ function NetworksManagerObjectConstructor.AddNode(node)
     if (GetNodeIndex(node) == 0) then
         -- Add to nodes
         Nodes[#Nodes + 1] = node
-        
-        -- Does the node tick?
-        local handler = RSE.NodeHandlersRegistry:GetNodeHandler(node)
-        if (handler.NeedsTicks) then
-            -- Add to ticking
-            TickingNodes[node] = handler
-        end
     
     ---RSE.Logger.Trace("Networks: Added node")
     end
@@ -184,50 +187,54 @@ function NetworksManagerObjectConstructor.Tick(event)
         end
     end
     
-    -- Tick nodes
-    for node, handler in next, TickingNodes do
-        if (handler.Valid(node)) then
-            handler.OnTick(node, event.tick)
-        end
-    end
-    
-    
-    -- Network tick?
-    --if (math.fmod(event.tick, RSE.Settings.TickRate) == 0) then
-    if tick % 100 == 0 then
-        -- Validate all nodes and connections
-        local node = nil
-        local idx = 1
-        while (idx <= #Nodes) do
-            node = Nodes[idx]
+    -- Check node connections
+    if tick % 10 == 0 then
+        --RSE.Logger.Info(LastNetworkTick .. " to " .. LastNetworkTick + 10)
+        LastNodePos = LastNodePos + 1
+        for idx = LastNodePos, LastNodePos + 10 do
+            if (idx > #Nodes) then
+                LastNodePos = 0
+                break
+            end
+
+            local node = Nodes[idx]
             -- Is the node still valid?
             if (RSE.NodeHandlersRegistry:GetNodeHandler(node).Valid(node)) then
                 -- Validate connections
                 ValidateConnection(node, defines.wire_type.green)
                 ValidateConnection(node, defines.wire_type.red)
-                
-                -- Increment loop variable
-                idx = idx + 1
             else
                 -- Node is no longer valid, remove it, and do not increment loop varaiable
                 ---RSE.Logger.Trace("Networks: Removing invalid node")
-                ---RSE.Logger.Trace(serpent.block(node))
                 RemoveNodeByIndex(idx)
             end
-        end
-    end -- End network tick
 
-    if tick % RSE.Settings.TickRate == 0 then
-        -- Validate and tick all networks
-        for circuitNetworkID, network in pairs(Networks) do
-            if (RSE.NetworkHandler.Empty(network)) then
-                ---RSE.Logger.Trace("Removing empty network " .. tostring(circuitNetworkID))
-                Networks[circuitNetworkID] = nil
-            else
-                ---RSE.Logger.Trace("Ticking Network " .. tostring(circuitNetworkID))
-                RSE.NetworkHandler.NetworkTick(network)
-            end
+            LastNodePos = idx
         end
+    end
+
+    -- Validate and tick all networks
+    --RSE.Logger.Info(LastNetworkPos .. " to " .. LastNetworkPos + 10)
+    LastNetworkPos = LastNetworkPos + 1
+    for i = LastNetworkPos, LastNetworkPos + RSE.Settings.NetworksPerTick do
+        if (i > #NetworkIDs) then
+            LastNetworkPos = 0
+            break
+        end
+
+        local network = Networks[NetworkIDs[i]]
+        local circuitNetworkID = NetworkIDs[i]
+
+        if (RSE.NetworkHandler.Empty(network)) then
+            ---RSE.Logger.Trace("Removing empty network " .. tostring(circuitNetworkID))
+            Networks[circuitNetworkID] = nil
+            RemoveNetworkID(circuitNetworkID)
+        else
+            ---RSE.Logger.Trace("Ticking Network " .. tostring(circuitNetworkID))
+            RSE.NetworkHandler.NetworkTick(network, event)
+        end
+
+        LastNetworkPos = i
     end
 end
 
@@ -271,12 +278,6 @@ function NetworksManagerObjectConstructor.FirstTick()
         if (network ~= nil) then
             -- Add the node
             RSE.NetworkHandler.AddNode(network, node, false)
-        end
-        
-        -- Does the node tick?
-        if (handler.NeedsTicks) then
-            -- Add to ticking
-            TickingNodes[node] = handler
         end
     end
 end

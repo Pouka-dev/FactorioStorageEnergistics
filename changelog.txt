@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.3
+Date: 2023-07-21
+  Changes:
+    - Added better migration that attempts to recover filters from old entities.
+---------------------------------------------------------------------------------------------------
+Version: 1.2.2
+Date: 2023-07-20
+  Changes:
+    - Storage Network code has been altered to handle large networks as well as multiple networks in a much faster manner.
+    - Ticks between updates has been dropped in favour of the new processing per tick system.
+---------------------------------------------------------------------------------------------------
 Version: 1.2.1
 Date: 12. 06. 2022
   Bugfixes:

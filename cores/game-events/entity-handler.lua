@@ -12,7 +12,7 @@ local EntityHandlers = {
 function CreationHandlers.OnEntityBuilt(entity, event)
     local handler = RSE.NodeHandlersRegistry:GetEntityHandler(entity)
     if (handler ~= nil) then
-        ---RSE.Logger.Trace("Entity Handler: Adding network node " .. handler.HandlerName)
+        --RSE.Logger.Trace("Entity Handler: Adding network node " .. handler.HandlerName)
         local newNode = RSE.NetworksManager.AddNode(handler.NewNode(entity,event))
         EntityHandlers.OnPasteSettingsWithNode(entity, newNode, event)
     end
